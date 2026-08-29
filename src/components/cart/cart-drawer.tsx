@@ -14,6 +14,7 @@ export function CartDrawer() {
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
       <button
+        type="button"
         aria-label="Fermer le panier"
         className="absolute inset-0 bg-nadya-black/40"
         onClick={closeDrawer}
@@ -22,6 +23,7 @@ export function CartDrawer() {
         <div className="flex items-center justify-between border-b border-nadya-line px-6 py-5">
           <h2 className="font-display text-lg text-nadya-black">Votre panier</h2>
           <button
+            type="button"
             onClick={closeDrawer}
             aria-label="Fermer"
             className="text-nadya-black/60 hover:text-nadya-black"
@@ -64,6 +66,7 @@ export function CartDrawer() {
                     <div className="mt-2 flex items-center gap-3">
                       <div className="flex items-center border border-nadya-line">
                         <button
+                          type="button"
                           className="px-2 py-1 text-sm"
                           onClick={() => setQuantity(line.productId, line.quantity - 1)}
                           aria-label="Diminuer la quantité"
@@ -74,6 +77,7 @@ export function CartDrawer() {
                           {line.quantity}
                         </span>
                         <button
+                          type="button"
                           className="px-2 py-1 text-sm"
                           onClick={() => setQuantity(line.productId, line.quantity + 1)}
                           aria-label="Augmenter la quantité"
@@ -82,6 +86,7 @@ export function CartDrawer() {
                         </button>
                       </div>
                       <button
+                        type="button"
                         onClick={() => removeItem(line.productId)}
                         className="text-xs text-nadya-black/50 underline underline-offset-4 hover:text-nadya-black"
                       >

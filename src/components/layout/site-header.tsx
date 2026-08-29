@@ -21,6 +21,7 @@ export function SiteHeader() {
       <header className="sticky top-0 z-40 border-b border-nadya-line bg-nadya-cream/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
           <button
+            type="button"
             className="flex h-9 w-9 items-center justify-center lg:hidden"
             aria-label="Ouvrir le menu"
             onClick={() => setMenuOpen((v) => !v)}
@@ -56,6 +57,7 @@ export function SiteHeader() {
               <SearchIcon />
             </Link>
             <button
+              type="button"
               onClick={openDrawer}
               aria-label="Ouvrir le panier"
               className="relative flex h-9 w-9 items-center justify-center text-nadya-ink/80 hover:text-nadya-gold-dark"

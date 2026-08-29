@@ -57,6 +57,7 @@ export function CartPageContent() {
                 <div className="mt-3 flex items-center gap-4">
                   <div className="flex items-center border border-nadya-line">
                     <button
+                      type="button"
                       className="px-3 py-1.5 text-sm"
                       onClick={() => setQuantity(line.productId, line.quantity - 1)}
                       aria-label="Diminuer la quantité"
@@ -65,6 +66,7 @@ export function CartPageContent() {
                     </button>
                     <span className="min-w-[2rem] text-center text-sm">{line.quantity}</span>
                     <button
+                      type="button"
                       className="px-3 py-1.5 text-sm"
                       onClick={() => setQuantity(line.productId, line.quantity + 1)}
                       aria-label="Augmenter la quantité"
@@ -73,6 +75,7 @@ export function CartPageContent() {
                     </button>
                   </div>
                   <button
+                    type="button"
                     onClick={() => removeItem(line.productId)}
                     className="text-xs text-nadya-black/50 underline underline-offset-4 hover:text-nadya-black"
                   >

@@ -20,6 +20,7 @@ export function ProductGallery({
         {slots.map((_, i) => (
           <button
             key={i}
+            type="button"
             onClick={() => setActive(i)}
             className={`aspect-square w-16 shrink-0 overflow-hidden border-2 transition sm:w-20 ${
               active === i ? "border-nadya-gold" : "border-transparent"

@@ -44,6 +44,7 @@ export function ProductFilters({ showCategoryFilter = true }: { showCategoryFilt
             </p>
             <div className="flex flex-wrap gap-2">
               <button
+                type="button"
                 onClick={() => updateParam("categorie", undefined)}
                 className={`border px-3 py-1.5 text-sm transition ${
                   activeCategory === ""
@@ -56,6 +57,7 @@ export function ProductFilters({ showCategoryFilter = true }: { showCategoryFilt
               {categories.map((c) => (
                 <button
                   key={c.slug}
+                  type="button"
                   onClick={() => updateParam("categorie", c.slug)}
                   className={`border px-3 py-1.5 text-sm transition ${
                     activeCategory === c.slug
@@ -80,6 +82,7 @@ export function ProductFilters({ showCategoryFilter = true }: { showCategoryFilt
               return (
                 <button
                   key={range.label}
+                  type="button"
                   onClick={() => {
                     const params = new URLSearchParams(searchParams.toString());
                     if (range.min != null) params.set("min", String(range.min));
