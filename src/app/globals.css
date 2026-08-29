@@ -1,26 +1,61 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-nadya-black: #141210;
+  --color-nadya-ink: #1f1c19;
+  --color-nadya-gold: #b8924a;
+  --color-nadya-gold-light: #d8b877;
+  --color-nadya-gold-dark: #8a6b32;
+  --color-nadya-cream: #f8f3ea;
+  --color-nadya-pearl: #f1e9db;
+  --color-nadya-linen: #ece2cf;
+  --color-nadya-line: #e2d5bc;
+
+  --background: var(--color-nadya-cream);
+  --foreground: var(--color-nadya-black);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-nadya-black: var(--color-nadya-black);
+  --color-nadya-ink: var(--color-nadya-ink);
+  --color-nadya-gold: var(--color-nadya-gold);
+  --color-nadya-gold-light: var(--color-nadya-gold-light);
+  --color-nadya-gold-dark: var(--color-nadya-gold-dark);
+  --color-nadya-cream: var(--color-nadya-cream);
+  --color-nadya-pearl: var(--color-nadya-pearl);
+  --color-nadya-linen: var(--color-nadya-linen);
+  --color-nadya-line: var(--color-nadya-line);
+
+  --font-display: var(--font-playfair);
+  --font-sans: var(--font-jost);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+.text-gradient-gold {
+  background-image: linear-gradient(
+    100deg,
+    var(--color-nadya-black) 0%,
+    var(--color-nadya-gold-dark) 45%,
+    var(--color-nadya-gold-light) 65%,
+    var(--color-nadya-gold) 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.bg-noise-texture {
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgba(184, 146, 74, 0.08) 1px,
+    transparent 0
+  );
+  background-size: 18px 18px;
 }

@@ -1,0 +1,28 @@
+export type CategorySlug = "couronnes-tiares" | "colliers" | "peignes" | "hair-vines";
+
+export interface Category {
+  slug: CategorySlug;
+  nameFr: string;
+  nameAr: string;
+  descriptionFr: string;
+}
+
+export interface Product {
+  id: string;
+  slug: string;
+  nameFr: string;
+  subtitleFr: string;
+  categorySlug: CategorySlug;
+  price: number;
+  compareAtPrice?: number;
+  currency: "TND";
+  images: string[];
+  descriptionFr: string;
+  materialsFr: string[];
+  stock: number;
+  isFeatured: boolean;
+  isNew: boolean;
+  rating: number;
+  reviewCount: number;
+  createdAt: string;
+}
