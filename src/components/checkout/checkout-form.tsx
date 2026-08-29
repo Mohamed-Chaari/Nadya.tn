@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import { useCart } from "@/lib/cart/cart-context";
 import { createOrder } from "@/lib/orders/actions";
 import { formatPrice } from "@/lib/format";
+import { LocationSelector, type LocationValue } from "@/components/checkout/location-selector";
+
+const tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
 
 export function CheckoutForm() {
   const router = useRouter();
@@ -15,8 +18,13 @@ export function CheckoutForm() {
     customerName: "",
     customerPhone: "",
     customerAddress: "",
-    customerCity: "",
+    desiredDeliveryDate: "",
     notes: "",
+  });
+  const [location, setLocation] = useState<LocationValue>({
+    gouvernorat: "",
+    delegation: "",
+    localite: "",
   });
 
   function updateField(key: keyof typeof form, value: string) {
@@ -28,7 +36,13 @@ export function CheckoutForm() {
     setError(null);
     setSubmitting(true);
 
-    const result = await createOrder({ ...form, lines });
+    const result = await createOrder({
+      ...form,
+      shippingGouvernorat: location.gouvernorat,
+      shippingDelegation: location.delegation,
+      shippingLocalite: location.localite,
+      lines,
+    });
 
     if (!result.success || !result.orderNumber) {
       setError(result.error ?? "Une erreur est survenue. Merci de réessayer.");
@@ -95,17 +109,22 @@ export function CheckoutForm() {
           />
         </div>
 
+        <LocationSelector value={location} onChange={setLocation} />
+
         <div>
           <label className="mb-1.5 block text-xs tracking-[0.15em] text-nadya-black/50 uppercase">
-            Ville *
+            Date de livraison souhaitée (optionnel)
           </label>
           <input
-            required
-            type="text"
-            value={form.customerCity}
-            onChange={(e) => updateField("customerCity", e.target.value)}
+            type="date"
+            min={tomorrow}
+            value={form.desiredDeliveryDate}
+            onChange={(e) => updateField("desiredDeliveryDate", e.target.value)}
             className="w-full border border-nadya-line bg-nadya-cream px-3 py-2.5 text-sm text-nadya-black focus:border-nadya-gold focus:outline-none"
           />
+          <p className="mt-1 text-xs text-nadya-black/50">
+            Une date indicative — nous confirmons le créneau exact par téléphone.
+          </p>
         </div>
 
         <div>

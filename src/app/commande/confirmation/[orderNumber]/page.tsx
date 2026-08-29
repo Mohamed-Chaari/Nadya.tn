@@ -81,13 +81,30 @@ export default async function OrderConfirmationPage({ params }: PageProps) {
         <div>
           <p className="text-xs tracking-[0.15em] text-nadya-black/50 uppercase">Livraison</p>
           <p className="mt-1 text-sm text-nadya-black">
-            {order.customerAddress}, {order.customerCity}
+            {order.customerAddress}
+            {order.shippingLocalite ? `, ${order.shippingLocalite}` : ""}
+            {", "}
+            {order.shippingDelegation}, {order.shippingGouvernorat}
           </p>
         </div>
         <div>
           <p className="text-xs tracking-[0.15em] text-nadya-black/50 uppercase">Contact</p>
           <p className="mt-1 text-sm text-nadya-black">{order.customerPhone}</p>
         </div>
+        {order.desiredDeliveryDate && (
+          <div>
+            <p className="text-xs tracking-[0.15em] text-nadya-black/50 uppercase">
+              Date souhaitée
+            </p>
+            <p className="mt-1 text-sm text-nadya-black">
+              {new Date(order.desiredDeliveryDate).toLocaleDateString("fr-FR", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
+            </p>
+          </div>
+        )}
         {order.notes && (
           <div className="sm:col-span-2">
             <p className="text-xs tracking-[0.15em] text-nadya-black/50 uppercase">Notes</p>

@@ -7,6 +7,7 @@ import { formatPrice } from "@/lib/format";
 import { ProductGallery } from "@/components/product/product-gallery";
 import { ProductRating } from "@/components/product/product-rating";
 import { AddToCartForm } from "@/components/product/add-to-cart-form";
+import { CustomOrderContact } from "@/components/product/custom-order-contact";
 import { ProductGrid } from "@/components/product/product-grid";
 
 interface PageProps {
@@ -91,7 +92,11 @@ export default async function ProductPage({ params }: PageProps) {
           </div>
 
           <div className="mt-8">
-            <AddToCartForm product={product} />
+            {product.isCustomizable ? (
+              <CustomOrderContact product={product} />
+            ) : (
+              <AddToCartForm product={product} />
+            )}
           </div>
 
           <p className="mt-4 text-xs text-nadya-black/50">

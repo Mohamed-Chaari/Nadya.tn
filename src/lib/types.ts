@@ -24,6 +24,7 @@ export interface Product {
   stock: number;
   isFeatured: boolean;
   isNew: boolean;
+  isCustomizable: boolean;
   rating: number;
   reviewCount: number;
   createdAt: string;

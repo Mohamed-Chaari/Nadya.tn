@@ -21,6 +21,11 @@ export function ProductCard({ product }: { product: Product }) {
             Promo
           </span>
         )}
+        {product.isCustomizable && (
+          <span className="absolute right-3 top-3 border border-nadya-gold bg-nadya-cream/95 px-2 py-1 text-[0.6rem] tracking-[0.1em] text-nadya-gold-dark uppercase">
+            Personnalisable
+          </span>
+        )}
         {product.stock <= 4 && (
           <span className="absolute bottom-3 left-3 bg-nadya-cream/95 px-2 py-1 text-[0.6rem] tracking-[0.1em] text-nadya-black/80 uppercase">
             Plus que {product.stock} en stock

@@ -9,7 +9,10 @@ export interface OrderWithItems {
   customerName: string;
   customerPhone: string;
   customerAddress: string;
-  customerCity: string;
+  shippingGouvernorat: string;
+  shippingDelegation: string;
+  shippingLocalite: string | null;
+  desiredDeliveryDate: string | null;
   notes: string | null;
   subtotal: number;
   shippingFee: number;
@@ -48,7 +51,10 @@ export async function getOrderByNumber(orderNumber: number): Promise<OrderWithIt
     customerName: order.customer_name,
     customerPhone: order.customer_phone,
     customerAddress: order.customer_address,
-    customerCity: order.customer_city,
+    shippingGouvernorat: order.shipping_gouvernorat,
+    shippingDelegation: order.shipping_delegation,
+    shippingLocalite: order.shipping_localite,
+    desiredDeliveryDate: order.desired_delivery_date,
     notes: order.notes,
     subtotal: Number(order.subtotal),
     shippingFee: Number(order.shipping_fee),

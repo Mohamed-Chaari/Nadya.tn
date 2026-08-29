@@ -3,12 +3,16 @@
 import { getSupabaseServiceClient } from "@/lib/supabase/server";
 import { orderNotifier } from "@/lib/notifications/notify-order";
 import type { CartLine } from "@/lib/cart/cart-context";
+import { tunisiaGovernorates } from "@/lib/data/tunisia-locations";
 
 export interface CheckoutInput {
   customerName: string;
   customerPhone: string;
   customerAddress: string;
-  customerCity: string;
+  shippingGouvernorat: string;
+  shippingDelegation: string;
+  shippingLocalite: string;
+  desiredDeliveryDate?: string;
   notes?: string;
   lines: CartLine[];
 }
@@ -24,18 +28,27 @@ function isValidTunisianPhone(phone: string): boolean {
   return digits.length >= 8 && digits.length <= 12;
 }
 
+function isValidGouvernoratDelegation(gouvernorat: string, delegation: string): boolean {
+  const gov = tunisiaGovernorates.find((g) => g.name === gouvernorat);
+  return Boolean(gov && gov.delegations.includes(delegation));
+}
+
 export async function createOrder(input: CheckoutInput): Promise<CheckoutResult> {
   const name = input.customerName.trim();
   const phone = input.customerPhone.replace(/[^\d+]/g, "");
   const address = input.customerAddress.trim();
-  const city = input.customerCity.trim();
+  const gouvernorat = input.shippingGouvernorat.trim();
+  const delegation = input.shippingDelegation.trim();
+  const localite = input.shippingLocalite.trim();
 
   if (!name) return { success: false, error: "Le nom est requis." };
   if (!isValidTunisianPhone(phone)) {
     return { success: false, error: "Numéro de téléphone invalide." };
   }
   if (!address) return { success: false, error: "L'adresse est requise." };
-  if (!city) return { success: false, error: "La ville est requise." };
+  if (!isValidGouvernoratDelegation(gouvernorat, delegation)) {
+    return { success: false, error: "Merci de sélectionner un gouvernorat et une délégation valides." };
+  }
   if (input.lines.length === 0) return { success: false, error: "Le panier est vide." };
 
   const subtotal = input.lines.reduce((sum, l) => sum + l.price * l.quantity, 0);
@@ -50,7 +63,10 @@ export async function createOrder(input: CheckoutInput): Promise<CheckoutResult>
       customer_name: name,
       customer_phone: phone,
       customer_address: address,
-      customer_city: city,
+      shipping_gouvernorat: gouvernorat,
+      shipping_delegation: delegation,
+      shipping_localite: localite || null,
+      desired_delivery_date: input.desiredDeliveryDate || null,
       notes: input.notes?.trim() || null,
       subtotal,
       shipping_fee: shippingFee,
