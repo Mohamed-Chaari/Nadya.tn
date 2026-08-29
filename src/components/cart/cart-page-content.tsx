@@ -5,6 +5,7 @@ import { useCart } from "@/lib/cart/cart-context";
 import { formatPrice } from "@/lib/format";
 import { ProductPlaceholderArt } from "@/components/ui/product-placeholder-art";
 import type { CategorySlug } from "@/lib/types";
+import { SHIPPING_FEE } from "@/lib/config/shipping";
 
 export function CartPageContent() {
   const { lines, subtotal, setQuantity, removeItem } = useCart();
@@ -89,13 +90,20 @@ export function CartPageContent() {
 
         <div className="h-fit border border-nadya-line p-6">
           <h2 className="font-display text-lg text-nadya-black">Résumé</h2>
-          <div className="mt-4 flex items-center justify-between text-sm">
-            <span className="text-nadya-black/70">Sous-total</span>
-            <span className="font-medium text-nadya-black">{formatPrice(subtotal)}</span>
+          <div className="mt-4 space-y-1.5 text-sm">
+            <div className="flex items-center justify-between">
+              <span className="text-nadya-black/70">Sous-total</span>
+              <span className="text-nadya-black">{formatPrice(subtotal)}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-nadya-black/70">Livraison</span>
+              <span className="text-nadya-black">{formatPrice(SHIPPING_FEE)}</span>
+            </div>
+            <div className="flex items-center justify-between border-t border-nadya-line pt-1.5 text-base font-medium text-nadya-black">
+              <span>Total</span>
+              <span>{formatPrice(subtotal + SHIPPING_FEE)}</span>
+            </div>
           </div>
-          <p className="mt-1 text-xs text-nadya-black/50">
-            Livraison calculée à la commande
-          </p>
           <Link
             href="/commande"
             className="mt-6 block w-full bg-nadya-black py-3 text-center text-sm font-medium tracking-wide text-nadya-cream transition hover:bg-nadya-ink"

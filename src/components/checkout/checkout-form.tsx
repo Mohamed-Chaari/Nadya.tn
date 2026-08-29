@@ -6,6 +6,7 @@ import { useCart } from "@/lib/cart/cart-context";
 import { createOrder } from "@/lib/orders/actions";
 import { formatPrice } from "@/lib/format";
 import { LocationSelector, type LocationValue } from "@/components/checkout/location-selector";
+import { SHIPPING_FEE } from "@/lib/config/shipping";
 
 const tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
 
@@ -154,13 +155,20 @@ export function CheckoutForm() {
             </li>
           ))}
         </ul>
-        <div className="mt-4 flex items-center justify-between text-sm">
-          <span className="text-nadya-black/70">Sous-total</span>
-          <span className="font-medium text-nadya-black">{formatPrice(subtotal)}</span>
+        <div className="mt-4 space-y-1.5 text-sm">
+          <div className="flex items-center justify-between">
+            <span className="text-nadya-black/70">Sous-total</span>
+            <span className="text-nadya-black">{formatPrice(subtotal)}</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-nadya-black/70">Livraison</span>
+            <span className="text-nadya-black">{formatPrice(SHIPPING_FEE)}</span>
+          </div>
+          <div className="flex items-center justify-between border-t border-nadya-line pt-1.5 text-base font-medium text-nadya-black">
+            <span>Total</span>
+            <span>{formatPrice(subtotal + SHIPPING_FEE)}</span>
+          </div>
         </div>
-        <p className="mt-1 text-xs text-nadya-black/50">
-          Frais de livraison confirmés par téléphone
-        </p>
 
         <button
           type="submit"

@@ -68,7 +68,7 @@ export default async function OrderConfirmationPage({ params }: PageProps) {
           </div>
           <div className="flex justify-between text-nadya-black/70">
             <span>Livraison</span>
-            <span>Confirmée par téléphone</span>
+            <span>{formatPrice(order.shippingFee)}</span>
           </div>
           <div className="flex justify-between pt-1.5 text-base font-medium text-nadya-black">
             <span>Total</span>

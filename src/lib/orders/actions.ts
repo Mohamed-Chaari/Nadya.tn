@@ -4,6 +4,7 @@ import { getSupabaseServiceClient } from "@/lib/supabase/server";
 import { orderNotifier } from "@/lib/notifications/notify-order";
 import type { CartLine } from "@/lib/cart/cart-context";
 import { tunisiaGovernorates } from "@/lib/data/tunisia-locations";
+import { SHIPPING_FEE } from "@/lib/config/shipping";
 
 export interface CheckoutInput {
   customerName: string;
@@ -52,7 +53,7 @@ export async function createOrder(input: CheckoutInput): Promise<CheckoutResult>
   if (input.lines.length === 0) return { success: false, error: "Le panier est vide." };
 
   const subtotal = input.lines.reduce((sum, l) => sum + l.price * l.quantity, 0);
-  const shippingFee = 0;
+  const shippingFee = SHIPPING_FEE;
   const total = subtotal + shippingFee;
 
   const supabase = getSupabaseServiceClient();
