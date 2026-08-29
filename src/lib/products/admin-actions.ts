@@ -15,7 +15,11 @@ export interface ProductFormInput {
   compareAtPrice: number | null;
   images: string[];
   descriptionFr: string;
+  descriptionAr: string;
+  descriptionEn: string;
   materialsFr: string[];
+  materialsAr: string[];
+  materialsEn: string[];
   stock: number;
   isFeatured: boolean;
   isNew: boolean;
@@ -37,7 +41,11 @@ function toRow(input: ProductFormInput) {
     compare_at_price: input.compareAtPrice,
     images: input.images,
     description_fr: input.descriptionFr,
+    description_ar: input.descriptionAr || null,
+    description_en: input.descriptionEn || null,
     materials_fr: input.materialsFr,
+    materials_ar: input.materialsAr.length > 0 ? input.materialsAr : null,
+    materials_en: input.materialsEn.length > 0 ? input.materialsEn : null,
     stock: input.stock,
     is_featured: input.isFeatured,
     is_new: input.isNew,

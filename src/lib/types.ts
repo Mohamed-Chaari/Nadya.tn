@@ -6,7 +6,10 @@ export interface Category {
   slug: CategorySlug;
   nameFr: string;
   nameAr: string;
+  nameEn: string;
   descriptionFr: string;
+  descriptionAr: string;
+  descriptionEn: string;
 }
 
 export interface Product {
@@ -19,7 +22,11 @@ export interface Product {
   compareAtPrice?: number;
   images: string[];
   descriptionFr: string;
+  descriptionAr: string | null;
+  descriptionEn: string | null;
   materialsFr: string[];
+  materialsAr: string[] | null;
+  materialsEn: string[] | null;
   stock: number;
   isFeatured: boolean;
   isNew: boolean;

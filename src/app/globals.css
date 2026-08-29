@@ -33,6 +33,12 @@
   --font-sans: var(--font-jost);
 }
 
+/* Arabic script needs Arabic-supporting fonts — Playfair/Jost don't cover it. */
+html[dir="rtl"] {
+  --font-display: var(--font-amiri);
+  --font-sans: var(--font-cairo);
+}
+
 body {
   background: var(--background);
   color: var(--foreground);

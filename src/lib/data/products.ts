@@ -12,7 +12,11 @@ interface ProductRow {
   compare_at_price: number | null;
   images: string[];
   description_fr: string;
+  description_ar: string | null;
+  description_en: string | null;
   materials_fr: string[];
+  materials_ar: string[] | null;
+  materials_en: string[] | null;
   stock: number;
   is_featured: boolean;
   is_new: boolean;
@@ -33,7 +37,11 @@ function mapRow(row: ProductRow): Product {
     compareAtPrice: row.compare_at_price != null ? Number(row.compare_at_price) : undefined,
     images: row.images,
     descriptionFr: row.description_fr,
+    descriptionAr: row.description_ar,
+    descriptionEn: row.description_en,
     materialsFr: row.materials_fr,
+    materialsAr: row.materials_ar,
+    materialsEn: row.materials_en,
     stock: row.stock,
     isFeatured: row.is_featured,
     isNew: row.is_new,

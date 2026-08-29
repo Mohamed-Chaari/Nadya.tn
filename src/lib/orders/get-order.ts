@@ -16,6 +16,8 @@ export interface OrderWithItems {
   notes: string | null;
   subtotal: number;
   shippingFee: number;
+  couponCode: string | null;
+  discountAmount: number;
   total: number;
   createdAt: string;
   items: {
@@ -58,6 +60,8 @@ export async function getOrderByNumber(orderNumber: number): Promise<OrderWithIt
     notes: order.notes,
     subtotal: Number(order.subtotal),
     shippingFee: Number(order.shipping_fee),
+    couponCode: order.coupon_code,
+    discountAmount: Number(order.discount_amount ?? 0),
     total: Number(order.total),
     createdAt: order.created_at,
     items: (items ?? []).map((i) => ({

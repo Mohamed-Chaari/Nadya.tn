@@ -1,10 +1,14 @@
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import type { Product } from "@/lib/types";
 import { formatPrice } from "@/lib/format";
 import { ProductPlaceholderArt } from "@/components/ui/product-placeholder-art";
 import { LOW_STOCK_THRESHOLD } from "@/lib/config/catalog";
+import { WishlistButton } from "@/components/product/wishlist-button";
 
 export function ProductCard({ product }: { product: Product }) {
+  const t = useTranslations("ProductCard");
+
   return (
     <Link href={`/produits/${product.slug}`} className="group block">
       <div className="relative aspect-[4/5] overflow-hidden">
@@ -13,25 +17,29 @@ export function ProductCard({ product }: { product: Product }) {
           className="h-full w-full transition duration-500 group-hover:scale-105"
         />
         {product.isNew && (
-          <span className="absolute left-3 top-3 bg-nadya-black px-2 py-1 text-[0.6rem] tracking-[0.15em] text-nadya-cream uppercase">
-            Nouveau
+          <span className="absolute start-3 top-3 bg-nadya-black px-2 py-1 text-[0.6rem] tracking-[0.15em] text-nadya-cream uppercase">
+            {t("new")}
           </span>
         )}
         {!product.isNew && product.compareAtPrice && (
-          <span className="absolute left-3 top-3 bg-nadya-gold px-2 py-1 text-[0.6rem] tracking-[0.15em] text-nadya-black uppercase">
-            Promo
+          <span className="absolute start-3 top-3 bg-nadya-gold px-2 py-1 text-[0.6rem] tracking-[0.15em] text-nadya-black uppercase">
+            {t("promo")}
           </span>
         )}
         {product.isCustomizable && (
-          <span className="absolute right-3 top-3 border border-nadya-gold bg-nadya-cream/95 px-2 py-1 text-[0.6rem] tracking-[0.1em] text-nadya-gold-dark uppercase">
-            Personnalisable
+          <span className="absolute end-3 top-3 border border-nadya-gold bg-nadya-cream/95 px-2 py-1 text-[0.6rem] tracking-[0.1em] text-nadya-gold-dark uppercase">
+            {t("customizable")}
           </span>
         )}
         {product.stock <= LOW_STOCK_THRESHOLD && (
-          <span className="absolute bottom-3 left-3 bg-nadya-cream/95 px-2 py-1 text-[0.6rem] tracking-[0.1em] text-nadya-black/80 uppercase">
-            Plus que {product.stock} en stock
+          <span className="absolute bottom-3 start-3 bg-nadya-cream/95 px-2 py-1 text-[0.6rem] tracking-[0.1em] text-nadya-black/80 uppercase">
+            {t("lowStock", { count: product.stock })}
           </span>
         )}
+        <WishlistButton
+          product={product}
+          className="absolute bottom-3 end-3 h-8 w-8 rounded-full bg-nadya-cream/95 shadow-sm"
+        />
       </div>
       <div className="mt-3">
         <h3 className="font-display text-base text-nadya-black">{product.nameFr}</h3>

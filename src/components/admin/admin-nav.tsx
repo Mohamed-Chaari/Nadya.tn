@@ -8,6 +8,8 @@ import { LogoutButton } from "@/components/admin/logout-button";
 const navLinks = [
   { href: "/admin", label: "Commandes", exact: true },
   { href: "/admin/produits", label: "Produits", exact: false },
+  { href: "/admin/avis", label: "Avis", exact: false },
+  { href: "/admin/coupons", label: "Coupons", exact: false },
   { href: "/admin/clients", label: "Clients", exact: false },
   { href: "/admin/analytics", label: "Analytics", exact: false },
 ];

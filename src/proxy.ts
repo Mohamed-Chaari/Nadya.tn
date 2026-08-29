@@ -1,8 +1,12 @@
 import { createServerClient } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse, type NextRequest } from "next/server";
+import createIntlMiddleware from "next-intl/middleware";
+import { routing } from "@/i18n/routing";
 
-export async function proxy(request: NextRequest) {
+const intlMiddleware = createIntlMiddleware(routing);
+
+async function adminProxy(request: NextRequest) {
   let response = NextResponse.next({ request });
 
   const supabase = createServerClient(
@@ -58,6 +62,13 @@ export async function proxy(request: NextRequest) {
   return response;
 }
 
+export async function proxy(request: NextRequest) {
+  if (request.nextUrl.pathname.startsWith("/admin")) {
+    return adminProxy(request);
+  }
+  return intlMiddleware(request);
+}
+
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/admin/:path*", "/((?!admin|api|_next/static|_next/image|favicon.ico|.*\\..*).*)"],
 };

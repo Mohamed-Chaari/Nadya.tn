@@ -5,6 +5,7 @@ import { orderNotifier } from "@/lib/notifications/notify-order";
 import type { CartLine } from "@/lib/cart/cart-context";
 import { tunisiaGovernorates } from "@/lib/data/tunisia-locations";
 import { SHIPPING_FEE } from "@/lib/config/shipping";
+import { validateCoupon } from "@/lib/coupons/validate";
 
 export interface CheckoutInput {
   customerName: string;
@@ -15,13 +16,22 @@ export interface CheckoutInput {
   shippingLocalite: string;
   desiredDeliveryDate?: string;
   notes?: string;
+  couponCode?: string;
   lines: CartLine[];
 }
+
+export type CheckoutErrorCode =
+  | "nameRequired"
+  | "invalidPhone"
+  | "addressRequired"
+  | "invalidLocation"
+  | "emptyCart"
+  | "generic";
 
 export interface CheckoutResult {
   success: boolean;
   orderNumber?: number;
-  error?: string;
+  errorCode?: CheckoutErrorCode;
 }
 
 function isValidTunisianPhone(phone: string): boolean {
@@ -42,19 +52,31 @@ export async function createOrder(input: CheckoutInput): Promise<CheckoutResult>
   const delegation = input.shippingDelegation.trim();
   const localite = input.shippingLocalite.trim();
 
-  if (!name) return { success: false, error: "Le nom est requis." };
-  if (!isValidTunisianPhone(phone)) {
-    return { success: false, error: "Numéro de téléphone invalide." };
-  }
-  if (!address) return { success: false, error: "L'adresse est requise." };
+  if (!name) return { success: false, errorCode: "nameRequired" };
+  if (!isValidTunisianPhone(phone)) return { success: false, errorCode: "invalidPhone" };
+  if (!address) return { success: false, errorCode: "addressRequired" };
   if (!isValidGouvernoratDelegation(gouvernorat, delegation)) {
-    return { success: false, error: "Merci de sélectionner un gouvernorat et une délégation valides." };
+    return { success: false, errorCode: "invalidLocation" };
   }
-  if (input.lines.length === 0) return { success: false, error: "Le panier est vide." };
+  if (input.lines.length === 0) return { success: false, errorCode: "emptyCart" };
 
   const subtotal = input.lines.reduce((sum, l) => sum + l.price * l.quantity, 0);
   const shippingFee = SHIPPING_FEE;
-  const total = subtotal + shippingFee;
+
+  // Re-validate the coupon server-side — never trust a client-computed
+  // discount. Silently ignores an invalid/expired code rather than failing
+  // the whole order, since the client already surfaced errors before submit.
+  let couponCode: string | null = null;
+  let discountAmount = 0;
+  if (input.couponCode?.trim()) {
+    const couponResult = await validateCoupon(input.couponCode, subtotal);
+    if (couponResult.valid) {
+      couponCode = couponResult.code ?? null;
+      discountAmount = couponResult.discountAmount ?? 0;
+    }
+  }
+
+  const total = subtotal + shippingFee - discountAmount;
 
   const supabase = getSupabaseServiceClient();
 
@@ -71,6 +93,8 @@ export async function createOrder(input: CheckoutInput): Promise<CheckoutResult>
       notes: input.notes?.trim() || null,
       subtotal,
       shipping_fee: shippingFee,
+      coupon_code: couponCode,
+      discount_amount: discountAmount,
       total,
     })
     .select("id, order_number")
@@ -78,7 +102,7 @@ export async function createOrder(input: CheckoutInput): Promise<CheckoutResult>
 
   if (orderError || !order) {
     console.error("[createOrder] failed to insert order", orderError);
-    return { success: false, error: "Une erreur est survenue. Merci de réessayer." };
+    return { success: false, errorCode: "generic" };
   }
 
   const { error: itemsError } = await supabase.from("order_items").insert(
@@ -97,7 +121,14 @@ export async function createOrder(input: CheckoutInput): Promise<CheckoutResult>
   if (itemsError) {
     console.error("[createOrder] failed to insert order_items", itemsError);
     await supabase.from("orders").delete().eq("id", order.id);
-    return { success: false, error: "Une erreur est survenue. Merci de réessayer." };
+    return { success: false, errorCode: "generic" };
+  }
+
+  if (couponCode) {
+    const { error: rpcError } = await supabase.rpc("increment_coupon_used_count", {
+      coupon_code: couponCode,
+    });
+    if (rpcError) console.error("[createOrder] failed to increment coupon usage", rpcError);
   }
 
   const itemSummary = input.lines.map((l) => `${l.quantity}× ${l.nameFr}`).join(", ");

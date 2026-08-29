@@ -1,6 +1,7 @@
 "use client";
 
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { useCart } from "@/lib/cart/cart-context";
 import { formatPrice } from "@/lib/format";
 import { ProductPlaceholderArt } from "@/components/ui/product-placeholder-art";
@@ -8,6 +9,7 @@ import type { CategorySlug } from "@/lib/types";
 
 export function CartDrawer() {
   const { lines, isDrawerOpen, closeDrawer, subtotal, setQuantity, removeItem } = useCart();
+  const t = useTranslations("Cart");
 
   if (!isDrawerOpen) return null;
 
@@ -15,17 +17,17 @@ export function CartDrawer() {
     <div className="fixed inset-0 z-50 flex justify-end">
       <button
         type="button"
-        aria-label="Fermer le panier"
+        aria-label={t("closeCart")}
         className="absolute inset-0 bg-nadya-black/40"
         onClick={closeDrawer}
       />
       <div className="relative flex h-full w-full max-w-md flex-col bg-nadya-cream shadow-2xl">
         <div className="flex items-center justify-between border-b border-nadya-line px-6 py-5">
-          <h2 className="font-display text-lg text-nadya-black">Votre panier</h2>
+          <h2 className="font-display text-lg text-nadya-black">{t("title")}</h2>
           <button
             type="button"
             onClick={closeDrawer}
-            aria-label="Fermer"
+            aria-label={t("close")}
             className="text-nadya-black/60 hover:text-nadya-black"
           >
             ✕
@@ -34,13 +36,13 @@ export function CartDrawer() {
 
         {lines.length === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center gap-3 px-6 text-center">
-            <p className="text-nadya-black/60">Votre panier est vide.</p>
+            <p className="text-nadya-black/60">{t("empty")}</p>
             <Link
               href="/produits"
               onClick={closeDrawer}
               className="text-sm font-medium text-nadya-gold-dark underline underline-offset-4"
             >
-              Découvrir la collection
+              {t("browse")}
             </Link>
           </div>
         ) : (
@@ -69,7 +71,7 @@ export function CartDrawer() {
                           type="button"
                           className="px-2 py-1 text-sm"
                           onClick={() => setQuantity(line.productId, line.quantity - 1)}
-                          aria-label="Diminuer la quantité"
+                          aria-label={t("decrease")}
                         >
                           −
                         </button>
@@ -80,7 +82,7 @@ export function CartDrawer() {
                           type="button"
                           className="px-2 py-1 text-sm"
                           onClick={() => setQuantity(line.productId, line.quantity + 1)}
-                          aria-label="Augmenter la quantité"
+                          aria-label={t("increase")}
                         >
                           +
                         </button>
@@ -90,7 +92,7 @@ export function CartDrawer() {
                         onClick={() => removeItem(line.productId)}
                         className="text-xs text-nadya-black/50 underline underline-offset-4 hover:text-nadya-black"
                       >
-                        Retirer
+                        {t("remove")}
                       </button>
                     </div>
                   </div>
@@ -100,7 +102,7 @@ export function CartDrawer() {
 
             <div className="border-t border-nadya-line px-6 py-5">
               <div className="mb-4 flex items-center justify-between text-sm">
-                <span className="text-nadya-black/70">Sous-total</span>
+                <span className="text-nadya-black/70">{t("subtotal")}</span>
                 <span className="font-medium text-nadya-black">{formatPrice(subtotal)}</span>
               </div>
               <Link
@@ -108,7 +110,7 @@ export function CartDrawer() {
                 onClick={closeDrawer}
                 className="block w-full bg-nadya-black py-3 text-center text-sm font-medium tracking-wide text-nadya-cream transition hover:bg-nadya-ink"
               >
-                Voir le panier
+                {t("viewCart")}
               </Link>
             </div>
           </>

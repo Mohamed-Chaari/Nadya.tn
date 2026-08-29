@@ -26,7 +26,11 @@ export function ProductForm({
     compareAtPrice: product?.compareAtPrice?.toString() ?? "",
     images: product?.images.join("\n") ?? "",
     descriptionFr: product?.descriptionFr ?? "",
+    descriptionAr: product?.descriptionAr ?? "",
+    descriptionEn: product?.descriptionEn ?? "",
     materialsFr: product?.materialsFr.join("\n") ?? "",
+    materialsAr: product?.materialsAr?.join("\n") ?? "",
+    materialsEn: product?.materialsEn?.join("\n") ?? "",
     stock: product?.stock?.toString() ?? "0",
     isFeatured: product?.isFeatured ?? false,
     isNew: product?.isNew ?? false,
@@ -54,7 +58,11 @@ export function ProductForm({
       compareAtPrice: form.compareAtPrice ? Number(form.compareAtPrice) : null,
       images: form.images.split("\n").map((s) => s.trim()).filter(Boolean),
       descriptionFr: form.descriptionFr.trim(),
+      descriptionAr: form.descriptionAr.trim(),
+      descriptionEn: form.descriptionEn.trim(),
       materialsFr: form.materialsFr.split("\n").map((s) => s.trim()).filter(Boolean),
+      materialsAr: form.materialsAr.split("\n").map((s) => s.trim()).filter(Boolean),
+      materialsEn: form.materialsEn.split("\n").map((s) => s.trim()).filter(Boolean),
       stock: Number(form.stock),
       isFeatured: form.isFeatured,
       isNew: form.isNew,
@@ -182,6 +190,52 @@ export function ProductForm({
           onChange={(e) => update("materialsFr", e.target.value)}
           className={`${fieldClass} resize-none`}
         />
+      </div>
+
+      <div className="border-t border-nadya-line pt-5">
+        <p className="mb-4 text-xs tracking-[0.15em] text-nadya-black/40 uppercase">
+          Traductions (optionnel — le français s&apos;affiche par défaut si vide)
+        </p>
+        <div className="space-y-5">
+          <div>
+            <label className={labelClass}>Description (arabe)</label>
+            <textarea
+              rows={3}
+              dir="rtl"
+              value={form.descriptionAr}
+              onChange={(e) => update("descriptionAr", e.target.value)}
+              className={`${fieldClass} resize-none`}
+            />
+          </div>
+          <div>
+            <label className={labelClass}>Matières (arabe, une par ligne)</label>
+            <textarea
+              rows={3}
+              dir="rtl"
+              value={form.materialsAr}
+              onChange={(e) => update("materialsAr", e.target.value)}
+              className={`${fieldClass} resize-none`}
+            />
+          </div>
+          <div>
+            <label className={labelClass}>Description (anglais)</label>
+            <textarea
+              rows={3}
+              value={form.descriptionEn}
+              onChange={(e) => update("descriptionEn", e.target.value)}
+              className={`${fieldClass} resize-none`}
+            />
+          </div>
+          <div>
+            <label className={labelClass}>Matières (anglais, une par ligne)</label>
+            <textarea
+              rows={3}
+              value={form.materialsEn}
+              onChange={(e) => update("materialsEn", e.target.value)}
+              className={`${fieldClass} resize-none`}
+            />
+          </div>
+        </div>
       </div>
 
       <div>
