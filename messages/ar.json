@@ -176,5 +176,23 @@
     "empty": "قائمة المفضلة فارغة.",
     "emptyHint": "احفظي القطع التي تعجبكِ لتجديها بسهولة لاحقًا.",
     "browse": "اكتشفي المجموعة"
+  },
+  "Admin": {
+    "Toast": {
+      "productCreated": "تم إنشاء المنتج بنجاح",
+      "productUpdated": "تم تحديث المنتج",
+      "productDeleted": "تم حذف المنتج",
+      "orderStatusUpdated": "تم تحديث حالة الطلب",
+      "couponCreated": "تم إنشاء القسيمة بنجاح",
+      "couponActivated": "تم تفعيل القسيمة",
+      "couponDeactivated": "تم إلغاء تفعيل القسيمة",
+      "couponDeleted": "تم حذف القسيمة",
+      "reviewApproved": "تمت الموافقة على التقييم",
+      "reviewRejected": "تم رفض التقييم",
+      "categoryCreated": "تم إنشاء الفئة بنجاح",
+      "categoryUpdated": "تم تحديث الفئة",
+      "categoryDeleted": "تم حذف الفئة",
+      "error": "حدث خطأ. يرجى المحاولة مرة أخرى."
+    }
   }
 }

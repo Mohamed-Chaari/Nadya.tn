@@ -1,30 +1,32 @@
 "use client";
 
 import { useState } from "react";
-import { categories } from "@/lib/data/categories";
 import { slugify } from "@/lib/slugify";
 import type { ProductFormInput, ProductActionResult } from "@/lib/products/admin-actions";
-import type { Product } from "@/lib/types";
+import type { Category, Product } from "@/lib/types";
+import { ProductImageUpload } from "@/components/admin/product-image-upload";
 
 const fieldClass =
-  "w-full border border-nadya-line bg-white px-3 py-2.5 text-sm text-nadya-black focus:border-nadya-gold focus:outline-none";
-const labelClass = "mb-1.5 block text-xs tracking-[0.15em] text-nadya-black/50 uppercase";
+  "w-full border border-nadya-line dark:border-nadya-gold/15 bg-white dark:bg-nadya-onyx px-3 py-2.5 text-sm text-nadya-black dark:text-nadya-cream focus:border-nadya-gold focus:outline-none";
+const labelClass = "mb-1.5 block text-xs tracking-[0.15em] text-nadya-black/50 dark:text-nadya-cream/50 uppercase";
 
 export function ProductForm({
   product,
+  categories,
   action,
 }: {
   product?: Product;
+  categories: Category[];
   action: (input: ProductFormInput) => Promise<ProductActionResult>;
 }) {
   const [form, setForm] = useState({
     slug: product?.slug ?? "",
     nameFr: product?.nameFr ?? "",
     subtitleFr: product?.subtitleFr ?? "",
-    categorySlug: product?.categorySlug ?? categories[0].slug,
+    categorySlug: product?.categorySlug ?? categories[0]?.slug ?? "",
     price: product?.price?.toString() ?? "",
     compareAtPrice: product?.compareAtPrice?.toString() ?? "",
-    images: product?.images.join("\n") ?? "",
+    images: product?.images ?? ([] as string[]),
     descriptionFr: product?.descriptionFr ?? "",
     descriptionAr: product?.descriptionAr ?? "",
     descriptionEn: product?.descriptionEn ?? "",
@@ -56,7 +58,7 @@ export function ProductForm({
       categorySlug: form.categorySlug,
       price: Number(form.price),
       compareAtPrice: form.compareAtPrice ? Number(form.compareAtPrice) : null,
-      images: form.images.split("\n").map((s) => s.trim()).filter(Boolean),
+      images: form.images,
       descriptionFr: form.descriptionFr.trim(),
       descriptionAr: form.descriptionAr.trim(),
       descriptionEn: form.descriptionEn.trim(),
@@ -192,8 +194,8 @@ export function ProductForm({
         />
       </div>
 
-      <div className="border-t border-nadya-line pt-5">
-        <p className="mb-4 text-xs tracking-[0.15em] text-nadya-black/40 uppercase">
+      <div className="border-t border-nadya-line dark:border-nadya-gold/15 pt-5">
+        <p className="mb-4 text-xs tracking-[0.15em] text-nadya-black/40 dark:text-nadya-cream/40 uppercase">
           Traductions (optionnel — le français s&apos;affiche par défaut si vide)
         </p>
         <div className="space-y-5">
@@ -238,19 +240,10 @@ export function ProductForm({
         </div>
       </div>
 
-      <div>
-        <label className={labelClass}>Images — URLs (une par ligne)</label>
-        <textarea
-          rows={3}
-          value={form.images}
-          onChange={(e) => update("images", e.target.value)}
-          placeholder="https://..."
-          className={`${fieldClass} resize-none`}
-        />
-      </div>
+      <ProductImageUpload images={form.images} onChange={(images) => update("images", images)} />
 
       <div className="flex flex-wrap gap-6">
-        <label className="flex items-center gap-2 text-sm text-nadya-black">
+        <label className="flex items-center gap-2 text-sm text-nadya-black dark:text-nadya-cream">
           <input
             type="checkbox"
             checked={form.isFeatured}
@@ -258,7 +251,7 @@ export function ProductForm({
           />
           Mise en avant
         </label>
-        <label className="flex items-center gap-2 text-sm text-nadya-black">
+        <label className="flex items-center gap-2 text-sm text-nadya-black dark:text-nadya-cream">
           <input
             type="checkbox"
             checked={form.isNew}
@@ -266,7 +259,7 @@ export function ProductForm({
           />
           Nouveauté
         </label>
-        <label className="flex items-center gap-2 text-sm text-nadya-black">
+        <label className="flex items-center gap-2 text-sm text-nadya-black dark:text-nadya-cream">
           <input
             type="checkbox"
             checked={form.isCustomizable}
@@ -276,7 +269,7 @@ export function ProductForm({
         </label>
       </div>
 
-      {error && <p className="text-sm text-red-700">{error}</p>}
+      {error && <p className="text-sm text-red-700 dark:text-red-400">{error}</p>}
 
       <button
         type="submit"

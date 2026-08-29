@@ -101,14 +101,14 @@ export function CheckoutForm() {
   }
 
   if (lines.length === 0) {
-    return <p className="text-center text-nadya-black/60">{t("emptyCart")}</p>;
+    return <p className="text-center text-nadya-black/60 dark:text-nadya-cream/60">{t("emptyCart")}</p>;
   }
 
   return (
     <form onSubmit={handleSubmit} className="grid gap-10 lg:grid-cols-3">
       <div className="space-y-5 lg:col-span-2">
         <div>
-          <label className="mb-1.5 block text-xs tracking-[0.15em] text-nadya-black/50 uppercase">
+          <label className="mb-1.5 block text-xs tracking-[0.15em] text-nadya-black/50 dark:text-nadya-cream/50 uppercase">
             {t("fullName")} *
           </label>
           <input
@@ -116,12 +116,12 @@ export function CheckoutForm() {
             type="text"
             value={form.customerName}
             onChange={(e) => updateField("customerName", e.target.value)}
-            className="w-full border border-nadya-line bg-nadya-cream px-3 py-2.5 text-sm text-nadya-black focus:border-nadya-gold focus:outline-none"
+            className="w-full border border-nadya-line dark:border-nadya-gold/15 bg-nadya-cream dark:bg-nadya-black px-3 py-2.5 text-sm text-nadya-black dark:text-nadya-cream focus:border-nadya-gold focus:outline-none"
           />
         </div>
 
         <div>
-          <label className="mb-1.5 block text-xs tracking-[0.15em] text-nadya-black/50 uppercase">
+          <label className="mb-1.5 block text-xs tracking-[0.15em] text-nadya-black/50 dark:text-nadya-cream/50 uppercase">
             {t("phone")} *
           </label>
           <input
@@ -131,13 +131,13 @@ export function CheckoutForm() {
             placeholder="+216 XX XXX XXX"
             value={form.customerPhone}
             onChange={(e) => updateField("customerPhone", e.target.value)}
-            className="w-full border border-nadya-line bg-nadya-cream px-3 py-2.5 text-sm text-nadya-black focus:border-nadya-gold focus:outline-none"
+            className="w-full border border-nadya-line dark:border-nadya-gold/15 bg-nadya-cream dark:bg-nadya-black px-3 py-2.5 text-sm text-nadya-black dark:text-nadya-cream focus:border-nadya-gold focus:outline-none"
           />
-          <p className="mt-1 text-xs text-nadya-black/50">{t("phoneHelp")}</p>
+          <p className="mt-1 text-xs text-nadya-black/50 dark:text-nadya-cream/50">{t("phoneHelp")}</p>
         </div>
 
         <div>
-          <label className="mb-1.5 block text-xs tracking-[0.15em] text-nadya-black/50 uppercase">
+          <label className="mb-1.5 block text-xs tracking-[0.15em] text-nadya-black/50 dark:text-nadya-cream/50 uppercase">
             {t("address")} *
           </label>
           <input
@@ -145,14 +145,14 @@ export function CheckoutForm() {
             type="text"
             value={form.customerAddress}
             onChange={(e) => updateField("customerAddress", e.target.value)}
-            className="w-full border border-nadya-line bg-nadya-cream px-3 py-2.5 text-sm text-nadya-black focus:border-nadya-gold focus:outline-none"
+            className="w-full border border-nadya-line dark:border-nadya-gold/15 bg-nadya-cream dark:bg-nadya-black px-3 py-2.5 text-sm text-nadya-black dark:text-nadya-cream focus:border-nadya-gold focus:outline-none"
           />
         </div>
 
         <LocationSelector value={location} onChange={setLocation} />
 
         <div>
-          <label className="mb-1.5 block text-xs tracking-[0.15em] text-nadya-black/50 uppercase">
+          <label className="mb-1.5 block text-xs tracking-[0.15em] text-nadya-black/50 dark:text-nadya-cream/50 uppercase">
             {t("deliveryDate")}
           </label>
           <input
@@ -160,35 +160,35 @@ export function CheckoutForm() {
             min={tomorrow}
             value={form.desiredDeliveryDate}
             onChange={(e) => updateField("desiredDeliveryDate", e.target.value)}
-            className="w-full border border-nadya-line bg-nadya-cream px-3 py-2.5 text-sm text-nadya-black focus:border-nadya-gold focus:outline-none"
+            className="w-full border border-nadya-line dark:border-nadya-gold/15 bg-nadya-cream dark:bg-nadya-black px-3 py-2.5 text-sm text-nadya-black dark:text-nadya-cream focus:border-nadya-gold focus:outline-none"
           />
-          <p className="mt-1 text-xs text-nadya-black/50">{t("deliveryDateHelp")}</p>
+          <p className="mt-1 text-xs text-nadya-black/50 dark:text-nadya-cream/50">{t("deliveryDateHelp")}</p>
         </div>
 
         <div>
-          <label className="mb-1.5 block text-xs tracking-[0.15em] text-nadya-black/50 uppercase">
+          <label className="mb-1.5 block text-xs tracking-[0.15em] text-nadya-black/50 dark:text-nadya-cream/50 uppercase">
             {t("notes")}
           </label>
           <textarea
             rows={3}
             value={form.notes}
             onChange={(e) => updateField("notes", e.target.value)}
-            className="w-full resize-none border border-nadya-line bg-nadya-cream px-3 py-2.5 text-sm text-nadya-black focus:border-nadya-gold focus:outline-none"
+            className="w-full resize-none border border-nadya-line dark:border-nadya-gold/15 bg-nadya-cream dark:bg-nadya-black px-3 py-2.5 text-sm text-nadya-black dark:text-nadya-cream focus:border-nadya-gold focus:outline-none"
           />
         </div>
 
-        {errorCode && <p className="text-sm text-red-700">{tErrors(errorCode)}</p>}
+        {errorCode && <p className="text-sm text-red-700 dark:text-red-400">{tErrors(errorCode)}</p>}
       </div>
 
-      <div className="h-fit border border-nadya-line p-6">
-        <h2 className="font-display text-lg text-nadya-black">{t("orderSummary")}</h2>
-        <ul className="mt-4 space-y-2 border-b border-nadya-line pb-4 text-sm">
+      <div className="h-fit border border-nadya-line dark:border-nadya-gold/15 p-6">
+        <h2 className="font-display text-lg text-nadya-black dark:text-nadya-cream">{t("orderSummary")}</h2>
+        <ul className="mt-4 space-y-2 border-b border-nadya-line dark:border-nadya-gold/15 pb-4 text-sm">
           {lines.map((line) => (
             <li key={line.productId} className="flex justify-between gap-3">
-              <span className="text-nadya-black/70">
+              <span className="text-nadya-black/70 dark:text-nadya-cream/70">
                 {line.quantity}× {line.nameFr}
               </span>
-              <span className="text-nadya-black">{formatPrice(line.price * line.quantity)}</span>
+              <span className="text-nadya-black dark:text-nadya-cream">{formatPrice(line.price * line.quantity)}</span>
             </li>
           ))}
         </ul>
@@ -196,20 +196,20 @@ export function CheckoutForm() {
         <div className="mt-4">
           {appliedCoupon ? (
             <div className="flex items-center justify-between text-sm">
-              <span className="text-nadya-black/70">
+              <span className="text-nadya-black/70 dark:text-nadya-cream/70">
                 {t("couponApplied", { code: appliedCoupon.code })}
               </span>
               <button
                 type="button"
                 onClick={handleRemoveCoupon}
-                className="text-xs text-nadya-black/50 underline underline-offset-4 hover:text-nadya-black"
+                className="text-xs text-nadya-black/50 dark:text-nadya-cream/50 underline underline-offset-4 hover:text-nadya-black dark:text-nadya-cream"
               >
                 {t("removeCoupon")}
               </button>
             </div>
           ) : (
             <div>
-              <label className="mb-1.5 block text-xs tracking-[0.15em] text-nadya-black/50 uppercase">
+              <label className="mb-1.5 block text-xs tracking-[0.15em] text-nadya-black/50 dark:text-nadya-cream/50 uppercase">
                 {t("couponCode")}
               </label>
               <div className="flex gap-2">
@@ -218,30 +218,30 @@ export function CheckoutForm() {
                   value={couponInput}
                   onChange={(e) => setCouponInput(e.target.value)}
                   placeholder={t("couponPlaceholder")}
-                  className="w-full border border-nadya-line bg-nadya-cream px-3 py-2 text-sm text-nadya-black focus:border-nadya-gold focus:outline-none"
+                  className="w-full border border-nadya-line dark:border-nadya-gold/15 bg-nadya-cream dark:bg-nadya-black px-3 py-2 text-sm text-nadya-black dark:text-nadya-cream focus:border-nadya-gold focus:outline-none"
                 />
                 <button
                   type="button"
                   onClick={handleApplyCoupon}
                   disabled={isCheckingCoupon}
-                  className="shrink-0 border border-nadya-black px-3 py-2 text-sm text-nadya-black hover:bg-nadya-black hover:text-nadya-cream disabled:opacity-50"
+                  className="shrink-0 border border-nadya-black dark:border-nadya-cream px-3 py-2 text-sm text-nadya-black dark:text-nadya-cream hover:bg-nadya-black hover:text-nadya-cream dark:hover:bg-nadya-cream dark:bg-nadya-black dark:hover:text-nadya-black dark:text-nadya-cream disabled:opacity-50"
                 >
                   {isCheckingCoupon ? t("applying") : t("apply")}
                 </button>
               </div>
-              {couponError && <p className="mt-1.5 text-xs text-red-700">{tErrors(couponError)}</p>}
+              {couponError && <p className="mt-1.5 text-xs text-red-700 dark:text-red-400">{tErrors(couponError)}</p>}
             </div>
           )}
         </div>
 
         <div className="mt-4 space-y-1.5 text-sm">
           <div className="flex items-center justify-between">
-            <span className="text-nadya-black/70">{tCart("subtotal")}</span>
-            <span className="text-nadya-black">{formatPrice(subtotal)}</span>
+            <span className="text-nadya-black/70 dark:text-nadya-cream/70">{tCart("subtotal")}</span>
+            <span className="text-nadya-black dark:text-nadya-cream">{formatPrice(subtotal)}</span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-nadya-black/70">{tCart("shipping")}</span>
-            <span className="text-nadya-black">{formatPrice(SHIPPING_FEE)}</span>
+            <span className="text-nadya-black/70 dark:text-nadya-cream/70">{tCart("shipping")}</span>
+            <span className="text-nadya-black dark:text-nadya-cream">{formatPrice(SHIPPING_FEE)}</span>
           </div>
           {appliedCoupon && (
             <div className="flex items-center justify-between text-nadya-gold-dark">
@@ -249,7 +249,7 @@ export function CheckoutForm() {
               <span>-{formatPrice(appliedCoupon.discount)}</span>
             </div>
           )}
-          <div className="flex items-center justify-between border-t border-nadya-line pt-1.5 text-base font-medium text-nadya-black">
+          <div className="flex items-center justify-between border-t border-nadya-line dark:border-nadya-gold/15 pt-1.5 text-base font-medium text-nadya-black dark:text-nadya-cream">
             <span>{tCart("total")}</span>
             <span>{formatPrice(total)}</span>
           </div>
@@ -262,7 +262,7 @@ export function CheckoutForm() {
         >
           {isSubmitting ? t("submitting") : t("confirmOrder")}
         </button>
-        <p className="mt-3 text-center text-xs text-nadya-black/50">{t("cod")}</p>
+        <p className="mt-3 text-center text-xs text-nadya-black/50 dark:text-nadya-cream/50">{t("cod")}</p>
       </div>
     </form>
   );

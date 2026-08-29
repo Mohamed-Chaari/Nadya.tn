@@ -176,5 +176,23 @@
     "empty": "Your wishlist is empty.",
     "emptyHint": "Save the pieces you love to find them easily later.",
     "browse": "Discover the collection"
+  },
+  "Admin": {
+    "Toast": {
+      "productCreated": "Product created successfully",
+      "productUpdated": "Product updated",
+      "productDeleted": "Product deleted",
+      "orderStatusUpdated": "Order status updated",
+      "couponCreated": "Coupon created successfully",
+      "couponActivated": "Coupon activated",
+      "couponDeactivated": "Coupon deactivated",
+      "couponDeleted": "Coupon deleted",
+      "reviewApproved": "Review approved",
+      "reviewRejected": "Review rejected",
+      "categoryCreated": "Category created successfully",
+      "categoryUpdated": "Category updated",
+      "categoryDeleted": "Category deleted",
+      "error": "Something went wrong. Please try again."
+    }
   }
 }

@@ -1,8 +1,15 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --color-nadya-black: #141210;
   --color-nadya-ink: #1f1c19;
+  /* Dedicated dark-mode elevated-surface color (cards, modals) — kept
+     distinct from nadya-ink, which stays reserved for light-mode button
+     hover states. Warmer and a touch lighter than the page background so
+     cards read as clearly raised, not flat-on-flat. */
+  --color-nadya-onyx: #251f17;
   --color-nadya-gold: #b8924a;
   --color-nadya-gold-light: #d8b877;
   --color-nadya-gold-dark: #8a6b32;
@@ -15,12 +22,21 @@
   --foreground: var(--color-nadya-black);
 }
 
+.dark {
+  /* Base page background/text reuse the brand's own black/cream — the exact
+     same tones already used for the nav/footer — so dark mode stays
+     visually consistent with the brand rather than introducing new colors. */
+  --background: var(--color-nadya-black);
+  --foreground: var(--color-nadya-cream);
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
   --color-nadya-black: var(--color-nadya-black);
   --color-nadya-ink: var(--color-nadya-ink);
+  --color-nadya-onyx: var(--color-nadya-onyx);
   --color-nadya-gold: var(--color-nadya-gold);
   --color-nadya-gold-light: var(--color-nadya-gold-light);
   --color-nadya-gold-dark: var(--color-nadya-gold-dark);
@@ -64,4 +80,19 @@ body {
     transparent 0
   );
   background-size: 18px 18px;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-toast-in {
+  animation: toast-in 0.2s ease-out;
 }

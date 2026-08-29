@@ -17,7 +17,7 @@ export function SalesBarChart({ data }: { data: DailySales[] }) {
               className="w-full bg-nadya-gold transition-colors group-hover:bg-nadya-gold-dark"
               style={{ height: `${heightPct}%` }}
             />
-            <span className="mt-1.5 text-[0.6rem] text-nadya-black/40">
+            <span className="mt-1.5 text-[0.6rem] text-nadya-black/40 dark:text-nadya-cream/40">
               {new Date(day.date).toLocaleDateString("fr-FR", { day: "numeric", month: "numeric" })}
             </span>
           </div>

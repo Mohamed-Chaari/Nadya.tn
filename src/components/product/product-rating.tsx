@@ -16,7 +16,7 @@ export function ProductRating({
           <span key={i}>{i < Math.round(rating) ? "★" : "☆"}</span>
         ))}
       </div>
-      <span className="text-sm text-nadya-black/60">
+      <span className="text-sm text-nadya-black/60 dark:text-nadya-cream/60">
         {rating.toFixed(1)} ({t("reviews", { count: reviewCount })})
       </span>
     </div>

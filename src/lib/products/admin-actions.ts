@@ -79,7 +79,7 @@ export async function createProduct(input: ProductFormInput): Promise<ProductAct
   }
 
   revalidatePath("/admin/produits");
-  redirect("/admin/produits");
+  redirect("/admin/produits?toast=created");
 }
 
 export async function updateProduct(
@@ -102,7 +102,7 @@ export async function updateProduct(
   }
 
   revalidatePath("/admin/produits");
-  redirect("/admin/produits");
+  redirect("/admin/produits?toast=updated");
 }
 
 export async function deleteProduct(id: string): Promise<void> {

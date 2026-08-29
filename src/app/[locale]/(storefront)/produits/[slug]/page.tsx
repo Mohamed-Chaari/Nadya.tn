@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import { getTranslations, getLocale, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getAllProducts, getProductBySlug, getRelatedProducts } from "@/lib/data/products";
-import { getCategory, getCategoryName } from "@/lib/data/categories";
+import { getCategory } from "@/lib/data/categories";
+import { getCategoryName } from "@/lib/category-i18n";
 import { formatPrice } from "@/lib/format";
 import { getLocalizedDescription, getLocalizedMaterials } from "@/lib/product-i18n";
 import { getApprovedReviews, computeReviewStats } from "@/lib/reviews/get-reviews";
@@ -43,7 +44,7 @@ export default async function ProductPage({ params }: PageProps) {
 
   const t = await getTranslations("ProductDetail");
   const currentLocale = await getLocale();
-  const category = getCategory(product.categorySlug);
+  const category = await getCategory(product.categorySlug);
   const related = await getRelatedProducts(product);
   const reviews = await getApprovedReviews(product.id);
   const reviewStats = computeReviewStats(reviews);
@@ -51,7 +52,7 @@ export default async function ProductPage({ params }: PageProps) {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
-      <nav className="mb-6 text-xs text-nadya-black/50">
+      <nav className="mb-6 text-xs text-nadya-black/50 dark:text-nadya-cream/50">
         <Link href="/produits" className="hover:text-nadya-gold-dark">
           {t("breadcrumbShop")}
         </Link>
@@ -64,18 +65,22 @@ export default async function ProductPage({ params }: PageProps) {
           </>
         )}
         {" / "}
-        <span className="text-nadya-black/70">{product.nameFr}</span>
+        <span className="text-nadya-black/70 dark:text-nadya-cream/70">{product.nameFr}</span>
       </nav>
 
       <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
-        <ProductGallery categorySlug={product.categorySlug} />
+        <ProductGallery
+          categorySlug={product.categorySlug}
+          images={product.images}
+          productName={product.nameFr}
+        />
 
         <div className="flex flex-col">
           <p className="text-xs tracking-[0.2em] text-nadya-gold-dark uppercase">
             {category ? getCategoryName(category, currentLocale) : null}
           </p>
-          <h1 className="mt-2 font-display text-3xl text-nadya-black">{product.nameFr}</h1>
-          <p className="mt-1 text-nadya-black/60">{product.subtitleFr}</p>
+          <h1 className="mt-2 font-display text-3xl text-nadya-black dark:text-nadya-cream">{product.nameFr}</h1>
+          <p className="mt-1 text-nadya-black/60 dark:text-nadya-cream/60">{product.subtitleFr}</p>
 
           {reviewStats.count > 0 && (
             <div className="mt-3">
@@ -84,25 +89,25 @@ export default async function ProductPage({ params }: PageProps) {
           )}
 
           <div className="mt-4 flex items-center gap-3">
-            <span className="text-2xl font-medium text-nadya-black">
+            <span className="text-2xl font-medium text-nadya-black dark:text-nadya-cream">
               {formatPrice(product.price)}
             </span>
             {product.compareAtPrice && (
-              <span className="text-base text-nadya-black/40 line-through">
+              <span className="text-base text-nadya-black/40 dark:text-nadya-cream/40 line-through">
                 {formatPrice(product.compareAtPrice)}
               </span>
             )}
           </div>
 
-          <p className="mt-6 leading-relaxed text-nadya-black/75">
+          <p className="mt-6 leading-relaxed text-nadya-black/75 dark:text-nadya-cream/75">
             {getLocalizedDescription(product, currentLocale)}
           </p>
 
           <div className="mt-4">
-            <p className="mb-1 text-xs tracking-[0.15em] text-nadya-black/50 uppercase">
+            <p className="mb-1 text-xs tracking-[0.15em] text-nadya-black/50 dark:text-nadya-cream/50 uppercase">
               {t("materials")}
             </p>
-            <ul className="text-sm text-nadya-black/70">
+            <ul className="text-sm text-nadya-black/70 dark:text-nadya-cream/70">
               {getLocalizedMaterials(product, currentLocale).map((m) => (
                 <li key={m}>• {m}</li>
               ))}
@@ -120,18 +125,18 @@ export default async function ProductPage({ params }: PageProps) {
             {!product.isCustomizable && (
               <WishlistButton
                 product={product}
-                className="h-11 w-11 shrink-0 border border-nadya-line"
+                className="h-11 w-11 shrink-0 border border-nadya-line dark:border-nadya-gold/15"
               />
             )}
           </div>
 
-          <p className="mt-4 text-xs text-nadya-black/50">{t("shippingNote")}</p>
+          <p className="mt-4 text-xs text-nadya-black/50 dark:text-nadya-cream/50">{t("shippingNote")}</p>
         </div>
       </div>
 
       <div className="mt-20 grid gap-10 lg:grid-cols-2">
         <div>
-          <h2 className="mb-6 font-display text-2xl text-nadya-black">{tReviews("title")}</h2>
+          <h2 className="mb-6 font-display text-2xl text-nadya-black dark:text-nadya-cream">{tReviews("title")}</h2>
           <ReviewsList reviews={reviews} />
         </div>
         <div>
@@ -141,7 +146,7 @@ export default async function ProductPage({ params }: PageProps) {
 
       {related.length > 0 && (
         <div className="mt-20">
-          <h2 className="mb-6 font-display text-2xl text-nadya-black">{t("youMayLike")}</h2>
+          <h2 className="mb-6 font-display text-2xl text-nadya-black dark:text-nadya-cream">{t("youMayLike")}</h2>
           <ProductGrid products={related} />
         </div>
       )}

@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getAllProducts } from "@/lib/data/products";
+import { getAllCategories } from "@/lib/data/categories";
 import { filterAndSortProducts, type SortOption } from "@/lib/filter-products";
 import { ProductFilters } from "@/components/product/product-filters";
 import { ProductGrid } from "@/components/product/product-grid";
@@ -25,6 +26,7 @@ export default async function ProductsPage({ params, searchParams }: PageProps) 
   const sp = await searchParams;
   const t = await getTranslations("Products");
   const products = await getAllProducts();
+  const categories = await getAllCategories();
 
   const filtered = filterAndSortProducts(products, {
     categorySlug: typeof sp.categorie === "string" ? sp.categorie : undefined,
@@ -37,15 +39,15 @@ export default async function ProductsPage({ params, searchParams }: PageProps) 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
       <div className="mb-8">
-        <h1 className="font-display text-3xl text-nadya-black">{t("title")}</h1>
-        <p className="mt-2 text-sm text-nadya-black/60">{t("count", { count: filtered.length })}</p>
+        <h1 className="font-display text-3xl text-nadya-black dark:text-nadya-cream">{t("title")}</h1>
+        <p className="mt-2 text-sm text-nadya-black/60 dark:text-nadya-cream/60">{t("count", { count: filtered.length })}</p>
       </div>
 
       <Suspense>
         <div className="mb-6">
           <SearchBar />
         </div>
-        <ProductFilters />
+        <ProductFilters categories={categories} />
       </Suspense>
 
       <div className="mt-8">

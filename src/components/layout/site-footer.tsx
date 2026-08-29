@@ -1,14 +1,16 @@
 import { getTranslations, getLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Logo } from "@/components/layout/logo";
-import { categories, getCategoryName } from "@/lib/data/categories";
+import { getAllCategories } from "@/lib/data/categories";
+import { getCategoryName } from "@/lib/category-i18n";
 
 export async function SiteFooter() {
   const t = await getTranslations("Footer");
   const locale = await getLocale();
+  const categories = await getAllCategories();
 
   return (
-    <footer className="border-t border-nadya-line bg-nadya-black text-nadya-cream/80">
+    <footer className="border-t border-nadya-line dark:border-nadya-gold/15 bg-nadya-black text-nadya-cream/80">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-4">
         <div>
           <Logo />

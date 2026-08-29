@@ -17,8 +17,8 @@ interface LocationSelectorProps {
 }
 
 const fieldClass =
-  "w-full border border-nadya-line bg-nadya-cream px-3 py-2.5 text-sm text-nadya-black focus:border-nadya-gold focus:outline-none disabled:opacity-50";
-const labelClass = "mb-1.5 block text-xs tracking-[0.15em] text-nadya-black/50 uppercase";
+  "w-full border border-nadya-line dark:border-nadya-gold/15 bg-nadya-cream dark:bg-nadya-black px-3 py-2.5 text-sm text-nadya-black dark:text-nadya-cream focus:border-nadya-gold focus:outline-none disabled:opacity-50";
+const labelClass = "mb-1.5 block text-xs tracking-[0.15em] text-nadya-black/50 dark:text-nadya-cream/50 uppercase";
 
 export function LocationSelector({ value, onChange }: LocationSelectorProps) {
   const t = useTranslations("Checkout");
@@ -120,9 +120,9 @@ function DelegationCombobox({
         className={fieldClass}
       />
       {isOpen && !disabled && (
-        <ul className="absolute z-10 mt-1 max-h-56 w-full overflow-y-auto border border-nadya-line bg-nadya-cream shadow-lg">
+        <ul className="absolute z-10 mt-1 max-h-56 w-full overflow-y-auto border border-nadya-line dark:border-nadya-gold/15 bg-nadya-cream dark:bg-nadya-black shadow-lg">
           {filtered.length === 0 ? (
-            <li className="px-3 py-2 text-sm text-nadya-black/50">{t("noResults")}</li>
+            <li className="px-3 py-2 text-sm text-nadya-black/50 dark:text-nadya-cream/50">{t("noResults")}</li>
           ) : (
             filtered.map((option) => (
               <li key={option}>
@@ -133,8 +133,8 @@ function DelegationCombobox({
                     if (blurTimeout.current) clearTimeout(blurTimeout.current);
                     selectOption(option);
                   }}
-                  className={`block w-full px-3 py-2 text-start text-sm hover:bg-nadya-pearl ${
-                    option === value ? "bg-nadya-pearl font-medium" : ""
+                  className={`block w-full px-3 py-2 text-start text-sm hover:bg-nadya-pearl dark:bg-nadya-onyx ${
+                    option === value ? "bg-nadya-pearl dark:bg-nadya-onyx font-medium" : ""
                   }`}
                 >
                   {option}

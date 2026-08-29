@@ -42,7 +42,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#141210",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f8f3ea" },
+    { media: "(prefers-color-scheme: dark)", color: "#141210" },
+  ],
 };
 
 // Runs before paint so /ar and /en routes never flash the fr/ltr default
@@ -56,6 +59,20 @@ const SYNC_HTML_DIR_SCRIPT = `
 })();
 `;
 
+// Runs before paint so the page never flashes the light theme before
+// switching to a stored/system dark preference. Same blocking-script
+// pattern as SYNC_HTML_DIR_SCRIPT, for the same reason.
+// "nadya-theme" is "light" | "dark" | "system" | absent (absent and
+// "system" behave identically: follow the OS preference).
+const SYNC_THEME_SCRIPT = `
+(function () {
+  var stored = null;
+  try { stored = localStorage.getItem("nadya-theme"); } catch (e) {}
+  var isDark = stored === "dark" || ((!stored || stored === "system") && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  if (isDark) document.documentElement.classList.add("dark");
+})();
+`;
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
@@ -66,8 +83,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: SYNC_HTML_DIR_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: SYNC_THEME_SCRIPT }} />
       </head>
-      <body className="min-h-full flex flex-col bg-nadya-cream font-sans text-nadya-black">
+      <body className="min-h-full flex flex-col bg-nadya-cream dark:bg-nadya-black text-nadya-black dark:text-nadya-cream font-sans">
         <ServiceWorkerRegister />
         {children}
       </body>

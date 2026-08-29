@@ -37,10 +37,10 @@ export default async function OrderConfirmationPage({ params }: PageProps) {
         <span className="text-xs tracking-[0.3em] text-nadya-gold-dark uppercase">
           {t("thankYou", { name: order.customerName.split(" ")[0] })}
         </span>
-        <h1 className="mt-2 font-display text-3xl text-nadya-black">
+        <h1 className="mt-2 font-display text-3xl text-nadya-black dark:text-nadya-cream">
           {t("orderConfirmed", { number: order.orderNumber })}
         </h1>
-        <p className="mt-3 text-nadya-black/70">
+        <p className="mt-3 text-nadya-black/70 dark:text-nadya-cream/70">
           {t.rich("willContact", {
             phone: order.customerPhone,
             strong: (chunks) => <strong>{chunks}</strong>,
@@ -48,9 +48,9 @@ export default async function OrderConfirmationPage({ params }: PageProps) {
         </p>
       </div>
 
-      <div className="mt-10 border border-nadya-line">
-        <div className="border-b border-nadya-line px-6 py-4">
-          <h2 className="font-display text-lg text-nadya-black">{t("items")}</h2>
+      <div className="mt-10 border border-nadya-line dark:border-nadya-gold/15">
+        <div className="border-b border-nadya-line dark:border-nadya-gold/15 px-6 py-4">
+          <h2 className="font-display text-lg text-nadya-black dark:text-nadya-cream">{t("items")}</h2>
         </div>
         <ul className="divide-y divide-nadya-line">
           {order.items.map((item) => (
@@ -61,24 +61,24 @@ export default async function OrderConfirmationPage({ params }: PageProps) {
               />
               <div className="flex flex-1 items-center justify-between gap-4">
                 <div>
-                  <p className="text-sm font-medium text-nadya-black">{item.productName}</p>
-                  <p className="text-xs text-nadya-black/50">
+                  <p className="text-sm font-medium text-nadya-black dark:text-nadya-cream">{item.productName}</p>
+                  <p className="text-xs text-nadya-black/50 dark:text-nadya-cream/50">
                     {item.quantity} × {formatPrice(item.unitPrice)}
                   </p>
                 </div>
-                <p className="text-sm font-medium text-nadya-black">
+                <p className="text-sm font-medium text-nadya-black dark:text-nadya-cream">
                   {formatPrice(item.lineTotal)}
                 </p>
               </div>
             </li>
           ))}
         </ul>
-        <div className="space-y-1.5 border-t border-nadya-line px-6 py-4 text-sm">
-          <div className="flex justify-between text-nadya-black/70">
+        <div className="space-y-1.5 border-t border-nadya-line dark:border-nadya-gold/15 px-6 py-4 text-sm">
+          <div className="flex justify-between text-nadya-black/70 dark:text-nadya-cream/70">
             <span>{t("subtotal")}</span>
             <span>{formatPrice(order.subtotal)}</span>
           </div>
-          <div className="flex justify-between text-nadya-black/70">
+          <div className="flex justify-between text-nadya-black/70 dark:text-nadya-cream/70">
             <span>{t("shipping")}</span>
             <span>{formatPrice(order.shippingFee)}</span>
           </div>
@@ -91,19 +91,19 @@ export default async function OrderConfirmationPage({ params }: PageProps) {
               <span>-{formatPrice(order.discountAmount)}</span>
             </div>
           )}
-          <div className="flex justify-between pt-1.5 text-base font-medium text-nadya-black">
+          <div className="flex justify-between pt-1.5 text-base font-medium text-nadya-black dark:text-nadya-cream">
             <span>{t("total")}</span>
             <span>{formatPrice(order.total)}</span>
           </div>
         </div>
       </div>
 
-      <div className="mt-8 grid gap-6 border border-nadya-line p-6 sm:grid-cols-2">
+      <div className="mt-8 grid gap-6 border border-nadya-line dark:border-nadya-gold/15 p-6 sm:grid-cols-2">
         <div>
-          <p className="text-xs tracking-[0.15em] text-nadya-black/50 uppercase">
+          <p className="text-xs tracking-[0.15em] text-nadya-black/50 dark:text-nadya-cream/50 uppercase">
             {t("delivery")}
           </p>
-          <p className="mt-1 text-sm text-nadya-black">
+          <p className="mt-1 text-sm text-nadya-black dark:text-nadya-cream">
             {order.customerAddress}
             {order.shippingLocalite ? `, ${order.shippingLocalite}` : ""}
             {", "}
@@ -111,17 +111,17 @@ export default async function OrderConfirmationPage({ params }: PageProps) {
           </p>
         </div>
         <div>
-          <p className="text-xs tracking-[0.15em] text-nadya-black/50 uppercase">
+          <p className="text-xs tracking-[0.15em] text-nadya-black/50 dark:text-nadya-cream/50 uppercase">
             {t("contact")}
           </p>
-          <p className="mt-1 text-sm text-nadya-black">{order.customerPhone}</p>
+          <p className="mt-1 text-sm text-nadya-black dark:text-nadya-cream">{order.customerPhone}</p>
         </div>
         {order.desiredDeliveryDate && (
           <div>
-            <p className="text-xs tracking-[0.15em] text-nadya-black/50 uppercase">
+            <p className="text-xs tracking-[0.15em] text-nadya-black/50 dark:text-nadya-cream/50 uppercase">
               {t("desiredDate")}
             </p>
-            <p className="mt-1 text-sm text-nadya-black">
+            <p className="mt-1 text-sm text-nadya-black dark:text-nadya-cream">
               {new Date(order.desiredDeliveryDate).toLocaleDateString(
                 DATE_LOCALES[locale] ?? "fr-FR",
                 { day: "numeric", month: "long", year: "numeric" }
@@ -131,10 +131,10 @@ export default async function OrderConfirmationPage({ params }: PageProps) {
         )}
         {order.notes && (
           <div className="sm:col-span-2">
-            <p className="text-xs tracking-[0.15em] text-nadya-black/50 uppercase">
+            <p className="text-xs tracking-[0.15em] text-nadya-black/50 dark:text-nadya-cream/50 uppercase">
               {t("notes")}
             </p>
-            <p className="mt-1 text-sm text-nadya-black">{order.notes}</p>
+            <p className="mt-1 text-sm text-nadya-black dark:text-nadya-cream">{order.notes}</p>
           </div>
         )}
       </div>
@@ -142,7 +142,7 @@ export default async function OrderConfirmationPage({ params }: PageProps) {
       <div className="mt-10 text-center">
         <Link
           href="/produits"
-          className="border border-nadya-black px-6 py-3 text-sm text-nadya-black hover:bg-nadya-black hover:text-nadya-cream"
+          className="border border-nadya-black dark:border-nadya-cream px-6 py-3 text-sm text-nadya-black dark:text-nadya-cream hover:bg-nadya-black hover:text-nadya-cream dark:hover:bg-nadya-cream dark:bg-nadya-black dark:hover:text-nadya-black dark:text-nadya-cream"
         >
           {t("continueShopping")}
         </Link>

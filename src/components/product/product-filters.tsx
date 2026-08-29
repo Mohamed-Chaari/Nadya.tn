@@ -3,8 +3,9 @@
 import { useSearchParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { useRouter, usePathname } from "@/i18n/navigation";
-import { categories, getCategoryName } from "@/lib/data/categories";
+import { getCategoryName } from "@/lib/category-i18n";
 import { formatPrice } from "@/lib/format";
+import type { Category } from "@/lib/types";
 
 const priceRanges = [
   { key: "all", min: undefined, max: undefined },
@@ -13,7 +14,13 @@ const priceRanges = [
   { key: "over", min: 350, max: undefined },
 ] as const;
 
-export function ProductFilters({ showCategoryFilter = true }: { showCategoryFilter?: boolean }) {
+export function ProductFilters({
+  categories,
+  showCategoryFilter = true,
+}: {
+  categories: Category[];
+  showCategoryFilter?: boolean;
+}) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -51,7 +58,7 @@ export function ProductFilters({ showCategoryFilter = true }: { showCategoryFilt
       <div className="flex flex-wrap gap-x-6 gap-y-4">
         {showCategoryFilter && (
           <div>
-            <p className="mb-2 text-xs tracking-[0.15em] text-nadya-black/50 uppercase">
+            <p className="mb-2 text-xs tracking-[0.15em] text-nadya-black/50 dark:text-nadya-cream/50 uppercase">
               {t("category")}
             </p>
             <div className="flex flex-wrap gap-2">
@@ -61,7 +68,7 @@ export function ProductFilters({ showCategoryFilter = true }: { showCategoryFilt
                 className={`border px-3 py-1.5 text-sm transition ${
                   activeCategory === ""
                     ? "border-nadya-black bg-nadya-black text-nadya-cream"
-                    : "border-nadya-line text-nadya-black/70 hover:border-nadya-black"
+                    : "border-nadya-line dark:border-nadya-gold/15 text-nadya-black/70 dark:text-nadya-cream/70 hover:border-nadya-black dark:hover:border-nadya-cream"
                 }`}
               >
                 {t("allCategories")}
@@ -74,7 +81,7 @@ export function ProductFilters({ showCategoryFilter = true }: { showCategoryFilt
                   className={`border px-3 py-1.5 text-sm transition ${
                     activeCategory === c.slug
                       ? "border-nadya-black bg-nadya-black text-nadya-cream"
-                      : "border-nadya-line text-nadya-black/70 hover:border-nadya-black"
+                      : "border-nadya-line dark:border-nadya-gold/15 text-nadya-black/70 dark:text-nadya-cream/70 hover:border-nadya-black dark:hover:border-nadya-cream"
                   }`}
                 >
                   {getCategoryName(c, locale)}
@@ -85,7 +92,7 @@ export function ProductFilters({ showCategoryFilter = true }: { showCategoryFilt
         )}
 
         <div>
-          <p className="mb-2 text-xs tracking-[0.15em] text-nadya-black/50 uppercase">
+          <p className="mb-2 text-xs tracking-[0.15em] text-nadya-black/50 dark:text-nadya-cream/50 uppercase">
             {t("price")}
           </p>
           <div className="flex flex-wrap gap-2">
@@ -108,7 +115,7 @@ export function ProductFilters({ showCategoryFilter = true }: { showCategoryFilt
                   className={`border px-3 py-1.5 text-sm transition ${
                     isActive
                       ? "border-nadya-black bg-nadya-black text-nadya-cream"
-                      : "border-nadya-line text-nadya-black/70 hover:border-nadya-black"
+                      : "border-nadya-line dark:border-nadya-gold/15 text-nadya-black/70 dark:text-nadya-cream/70 hover:border-nadya-black dark:hover:border-nadya-cream"
                   }`}
                 >
                   {priceRangeLabel(range)}
@@ -120,13 +127,13 @@ export function ProductFilters({ showCategoryFilter = true }: { showCategoryFilt
       </div>
 
       <div className="shrink-0">
-        <label className="mb-2 block text-xs tracking-[0.15em] text-nadya-black/50 uppercase">
+        <label className="mb-2 block text-xs tracking-[0.15em] text-nadya-black/50 dark:text-nadya-cream/50 uppercase">
           {t("sortBy")}
         </label>
         <select
           value={activeSort}
           onChange={(e) => updateParam("tri", e.target.value)}
-          className="border border-nadya-line bg-nadya-cream px-3 py-1.5 text-sm text-nadya-black"
+          className="border border-nadya-line dark:border-nadya-gold/15 bg-nadya-cream dark:bg-nadya-black px-3 py-1.5 text-sm text-nadya-black dark:text-nadya-cream"
         >
           {sortOptions.map((opt) => (
             <option key={opt.value} value={opt.value}>

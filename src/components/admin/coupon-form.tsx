@@ -2,14 +2,18 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { createCoupon } from "@/lib/coupons/admin-actions";
+import { useToast } from "@/components/admin/toast-provider";
 
 const fieldClass =
-  "w-full border border-nadya-line bg-white px-3 py-2.5 text-sm text-nadya-black focus:border-nadya-gold focus:outline-none";
-const labelClass = "mb-1.5 block text-xs tracking-[0.15em] text-nadya-black/50 uppercase";
+  "w-full border border-nadya-line dark:border-nadya-gold/15 bg-white dark:bg-nadya-onyx px-3 py-2.5 text-sm text-nadya-black dark:text-nadya-cream focus:border-nadya-gold focus:outline-none";
+const labelClass = "mb-1.5 block text-xs tracking-[0.15em] text-nadya-black/50 dark:text-nadya-cream/50 uppercase";
 
 export function CouponForm() {
   const router = useRouter();
+  const t = useTranslations("Admin.Toast");
+  const { showToast } = useToast();
   const [form, setForm] = useState({
     code: "",
     discountType: "percentage" as "percentage" | "fixed",
@@ -54,11 +58,12 @@ export function CouponForm() {
       expiresAt: "",
     });
     setSubmitting(false);
+    showToast("success", t("couponCreated"));
     router.refresh();
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-4 border border-nadya-line bg-white p-5 sm:grid-cols-3">
+    <form onSubmit={handleSubmit} className="grid gap-4 border border-nadya-line dark:border-nadya-gold/15 bg-white dark:bg-nadya-onyx p-5 sm:grid-cols-3">
       <div>
         <label className={labelClass}>Code *</label>
         <input
@@ -124,7 +129,7 @@ export function CouponForm() {
         />
       </div>
 
-      {error && <p className="text-sm text-red-700 sm:col-span-3">{error}</p>}
+      {error && <p className="text-sm text-red-700 dark:text-red-400 sm:col-span-3">{error}</p>}
 
       <div className="sm:col-span-3">
         <button

@@ -1,7 +1,9 @@
 "use client";
 
 import { useTransition } from "react";
+import { useTranslations } from "next-intl";
 import { updateOrderStatus } from "@/lib/orders/admin-actions";
+import { useToast } from "@/components/admin/toast-provider";
 import type { OrderStatus } from "@/lib/types";
 
 const NEXT_ACTIONS: Record<OrderStatus, { label: string; status: OrderStatus }[]> = {
@@ -26,6 +28,8 @@ export function OrderActionButtons({
   status: OrderStatus;
 }) {
   const [isPending, startTransition] = useTransition();
+  const t = useTranslations("Admin.Toast");
+  const { showToast } = useToast();
   const actions = NEXT_ACTIONS[status];
 
   if (actions.length === 0) return null;
@@ -33,7 +37,12 @@ export function OrderActionButtons({
   function handleClick(nextStatus: OrderStatus) {
     if (nextStatus === "cancelled" && !confirm("Annuler cette commande ?")) return;
     startTransition(async () => {
-      await updateOrderStatus(orderId, nextStatus);
+      try {
+        await updateOrderStatus(orderId, nextStatus);
+        showToast("success", t("orderStatusUpdated"));
+      } catch {
+        showToast("error", t("error"));
+      }
     });
   }
 
@@ -47,8 +56,8 @@ export function OrderActionButtons({
           onClick={() => handleClick(action.status)}
           className={`border px-3 py-1.5 text-xs font-medium transition disabled:opacity-50 ${
             action.status === "cancelled"
-              ? "border-red-300 text-red-700 hover:bg-red-50"
-              : "border-nadya-black text-nadya-black hover:bg-nadya-black hover:text-nadya-cream"
+              ? "border-red-300 dark:border-red-800 text-red-700 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950"
+              : "border-nadya-black dark:border-nadya-cream text-nadya-black dark:text-nadya-cream hover:bg-nadya-black hover:text-nadya-cream dark:hover:bg-nadya-cream dark:bg-nadya-black dark:hover:text-nadya-black dark:text-nadya-cream"
           }`}
         >
           {action.label}

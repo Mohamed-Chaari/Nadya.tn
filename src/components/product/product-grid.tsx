@@ -6,7 +6,7 @@ export function ProductGrid({ products }: { products: Product[] }) {
   const t = useTranslations("Products");
 
   if (products.length === 0) {
-    return <div className="py-20 text-center text-nadya-black/50">{t("noResults")}</div>;
+    return <div className="py-20 text-center text-nadya-black/50 dark:text-nadya-cream/50">{t("noResults")}</div>;
   }
 
   return (

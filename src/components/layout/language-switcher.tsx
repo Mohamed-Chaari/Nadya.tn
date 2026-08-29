@@ -16,7 +16,7 @@ export function LanguageSwitcher() {
   const pathname = usePathname();
 
   return (
-    <div className="flex items-center gap-1 text-xs tracking-wide text-nadya-ink/70">
+    <div className="flex items-center gap-1 text-xs tracking-wide text-nadya-ink/70 dark:text-nadya-cream/70">
       {routing.locales.map((loc, i) => (
         <span key={loc} className="flex items-center gap-1">
           {i > 0 && <span className="text-nadya-line">/</span>}

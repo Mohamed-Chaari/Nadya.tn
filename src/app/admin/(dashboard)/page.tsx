@@ -31,8 +31,8 @@ export default async function AdminOrdersPage({ searchParams }: PageProps) {
   return (
     <div>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-        <h1 className="font-display text-2xl text-nadya-black">Commandes</h1>
-        <p className="text-sm text-nadya-black/60">
+        <h1 className="font-display text-2xl text-nadya-black dark:text-nadya-cream">Commandes</h1>
+        <p className="text-sm text-nadya-black/60 dark:text-nadya-cream/60">
           {filtered.length} commande{filtered.length > 1 ? "s" : ""}
         </p>
       </div>
@@ -47,7 +47,7 @@ export default async function AdminOrdersPage({ searchParams }: PageProps) {
               className={`border px-3 py-1.5 text-sm transition ${
                 isActive
                   ? "border-nadya-black bg-nadya-black text-nadya-cream"
-                  : "border-nadya-line bg-white text-nadya-black/70 hover:border-nadya-black"
+                  : "border-nadya-line dark:border-nadya-gold/15 bg-white dark:bg-nadya-onyx text-nadya-black/70 dark:text-nadya-cream/70 hover:border-nadya-black dark:hover:border-nadya-cream"
               }`}
             >
               {tab.label}
@@ -57,22 +57,22 @@ export default async function AdminOrdersPage({ searchParams }: PageProps) {
       </div>
 
       {filtered.length === 0 ? (
-        <p className="border border-nadya-line bg-white p-8 text-center text-sm text-nadya-black/50">
+        <p className="border border-nadya-line dark:border-nadya-gold/15 bg-white dark:bg-nadya-onyx p-8 text-center text-sm text-nadya-black/50 dark:text-nadya-cream/50">
           Aucune commande.
         </p>
       ) : (
         <div className="space-y-3">
           {filtered.map((order) => (
-            <div key={order.id} className="border border-nadya-line bg-white p-4 sm:p-5">
+            <div key={order.id} className="border border-nadya-line dark:border-nadya-gold/15 bg-white dark:bg-nadya-onyx p-4 sm:p-5">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
                   <div className="flex items-center gap-3">
-                    <span className="font-display text-lg text-nadya-black">
+                    <span className="font-display text-lg text-nadya-black dark:text-nadya-cream">
                       #{order.orderNumber}
                     </span>
                     <OrderStatusBadge status={order.status} />
                   </div>
-                  <p className="mt-1 text-sm text-nadya-black/70">{order.customerName}</p>
+                  <p className="mt-1 text-sm text-nadya-black/70 dark:text-nadya-cream/70">{order.customerName}</p>
                   <a
                     href={`tel:${order.customerPhone}`}
                     className="mt-0.5 inline-flex items-center gap-1 text-sm font-medium text-nadya-gold-dark hover:underline"
@@ -81,8 +81,8 @@ export default async function AdminOrdersPage({ searchParams }: PageProps) {
                   </a>
                 </div>
                 <div className="text-right">
-                  <p className="font-medium text-nadya-black">{formatPrice(order.total)}</p>
-                  <p className="text-xs text-nadya-black/50">
+                  <p className="font-medium text-nadya-black dark:text-nadya-cream">{formatPrice(order.total)}</p>
+                  <p className="text-xs text-nadya-black/50 dark:text-nadya-cream/50">
                     {new Date(order.createdAt).toLocaleDateString("fr-FR", {
                       day: "numeric",
                       month: "short",
@@ -93,7 +93,7 @@ export default async function AdminOrdersPage({ searchParams }: PageProps) {
                 </div>
               </div>
 
-              <p className="mt-3 text-sm text-nadya-black/70">{order.itemSummary}</p>
+              <p className="mt-3 text-sm text-nadya-black/70 dark:text-nadya-cream/70">{order.itemSummary}</p>
 
               <div className="mt-4">
                 <OrderActionButtons orderId={order.id} status={order.status} />

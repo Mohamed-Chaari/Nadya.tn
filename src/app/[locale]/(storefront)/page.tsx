@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { getTranslations, getLocale, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { categories, getCategoryName } from "@/lib/data/categories";
+import { getAllCategories } from "@/lib/data/categories";
+import { getCategoryName } from "@/lib/category-i18n";
 import { getFeaturedProducts, getNewProducts } from "@/lib/data/products";
 import { ProductGrid } from "@/components/product/product-grid";
 import { ProductPlaceholderArt } from "@/components/ui/product-placeholder-art";
@@ -22,20 +23,21 @@ export default async function HomePage({ params }: PageProps) {
 
   const t = await getTranslations("Home");
   const currentLocale = await getLocale();
+  const categories = await getAllCategories();
   const featured = await getFeaturedProducts();
   const newArrivals = await getNewProducts();
 
   return (
     <div>
-      <section className="relative overflow-hidden bg-nadya-pearl bg-noise-texture">
+      <section className="relative overflow-hidden bg-nadya-pearl dark:bg-nadya-onyx bg-noise-texture">
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-6 px-4 py-24 text-center sm:px-6 sm:py-32">
           <span className="text-xs tracking-[0.3em] text-nadya-gold-dark uppercase">
             {t("tagline")}
           </span>
-          <h1 className="max-w-2xl font-display text-4xl leading-tight text-nadya-black sm:text-5xl">
+          <h1 className="max-w-2xl font-display text-4xl leading-tight text-nadya-black dark:text-nadya-cream sm:text-5xl">
             {t("heroTitle")} <span className="text-gradient-gold">{t("heroTitleHighlight")}</span>
           </h1>
-          <p className="max-w-md text-nadya-black/70">{t("heroSubtitle")}</p>
+          <p className="max-w-md text-nadya-black/70 dark:text-nadya-cream/70">{t("heroSubtitle")}</p>
           <Link
             href="/produits"
             className="mt-2 bg-nadya-black px-7 py-3 text-sm font-medium tracking-wide text-nadya-cream transition hover:bg-nadya-ink"
@@ -46,7 +48,7 @@ export default async function HomePage({ params }: PageProps) {
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
-        <h2 className="mb-8 text-center font-display text-2xl text-nadya-black">
+        <h2 className="mb-8 text-center font-display text-2xl text-nadya-black dark:text-nadya-cream">
           {t("ourCollections")}
         </h2>
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
@@ -60,7 +62,7 @@ export default async function HomePage({ params }: PageProps) {
                 categorySlug={category.slug}
                 className="aspect-square w-full transition duration-500 group-hover:scale-[1.02]"
               />
-              <p className="mt-3 text-center font-display text-base text-nadya-black">
+              <p className="mt-3 text-center font-display text-base text-nadya-black dark:text-nadya-cream">
                 {getCategoryName(category, currentLocale)}
               </p>
             </Link>
@@ -71,7 +73,7 @@ export default async function HomePage({ params }: PageProps) {
       {featured.length > 0 && (
         <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
           <div className="mb-8 flex items-end justify-between">
-            <h2 className="font-display text-2xl text-nadya-black">{t("featured")}</h2>
+            <h2 className="font-display text-2xl text-nadya-black dark:text-nadya-cream">{t("featured")}</h2>
             <Link
               href="/produits"
               className="text-sm text-nadya-gold-dark underline underline-offset-4"
@@ -86,7 +88,7 @@ export default async function HomePage({ params }: PageProps) {
       {newArrivals.length > 0 && (
         <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
           <div className="mb-8 flex items-end justify-between">
-            <h2 className="font-display text-2xl text-nadya-black">{t("newArrivals")}</h2>
+            <h2 className="font-display text-2xl text-nadya-black dark:text-nadya-cream">{t("newArrivals")}</h2>
             <Link
               href="/produits?tri=newest"
               className="text-sm text-nadya-gold-dark underline underline-offset-4"
@@ -98,7 +100,7 @@ export default async function HomePage({ params }: PageProps) {
         </section>
       )}
 
-      <section className="border-t border-nadya-line bg-nadya-black">
+      <section className="border-t border-nadya-line dark:border-nadya-gold/15 bg-nadya-black">
         <div className="mx-auto max-w-3xl px-4 py-20 text-center sm:px-6">
           <span className="text-xs tracking-[0.3em] text-nadya-gold uppercase">
             {t("ourStory")}

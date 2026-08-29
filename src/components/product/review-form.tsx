@@ -48,18 +48,18 @@ export function ReviewForm({
 
   if (submitted) {
     return (
-      <div className="border border-nadya-line bg-nadya-pearl p-5 text-sm text-nadya-black/80">
+      <div className="border border-nadya-line dark:border-nadya-gold/15 bg-nadya-pearl dark:bg-nadya-onyx p-5 text-sm text-nadya-black/80 dark:text-nadya-cream/80">
         {t("thankYou")}
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 border border-nadya-line p-5">
-      <h3 className="font-display text-base text-nadya-black">{t("leaveReview")}</h3>
+    <form onSubmit={handleSubmit} className="space-y-4 border border-nadya-line dark:border-nadya-gold/15 p-5">
+      <h3 className="font-display text-base text-nadya-black dark:text-nadya-cream">{t("leaveReview")}</h3>
 
       <div>
-        <label className="mb-1.5 block text-xs tracking-[0.15em] text-nadya-black/50 uppercase">
+        <label className="mb-1.5 block text-xs tracking-[0.15em] text-nadya-black/50 dark:text-nadya-cream/50 uppercase">
           {t("yourRating")} *
         </label>
         <div className="flex gap-1 text-2xl text-nadya-gold">
@@ -80,7 +80,7 @@ export function ReviewForm({
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label className="mb-1.5 block text-xs tracking-[0.15em] text-nadya-black/50 uppercase">
+          <label className="mb-1.5 block text-xs tracking-[0.15em] text-nadya-black/50 dark:text-nadya-cream/50 uppercase">
             {t("yourName")} *
           </label>
           <input
@@ -88,24 +88,24 @@ export function ReviewForm({
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full border border-nadya-line bg-nadya-cream px-3 py-2.5 text-sm text-nadya-black focus:border-nadya-gold focus:outline-none"
+            className="w-full border border-nadya-line dark:border-nadya-gold/15 bg-nadya-cream dark:bg-nadya-black px-3 py-2.5 text-sm text-nadya-black dark:text-nadya-cream focus:border-nadya-gold focus:outline-none"
           />
         </div>
         <div>
-          <label className="mb-1.5 block text-xs tracking-[0.15em] text-nadya-black/50 uppercase">
+          <label className="mb-1.5 block text-xs tracking-[0.15em] text-nadya-black/50 dark:text-nadya-cream/50 uppercase">
             {t("yourPhone")}
           </label>
           <input
             type="tel"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            className="w-full border border-nadya-line bg-nadya-cream px-3 py-2.5 text-sm text-nadya-black focus:border-nadya-gold focus:outline-none"
+            className="w-full border border-nadya-line dark:border-nadya-gold/15 bg-nadya-cream dark:bg-nadya-black px-3 py-2.5 text-sm text-nadya-black dark:text-nadya-cream focus:border-nadya-gold focus:outline-none"
           />
         </div>
       </div>
 
       <div>
-        <label className="mb-1.5 block text-xs tracking-[0.15em] text-nadya-black/50 uppercase">
+        <label className="mb-1.5 block text-xs tracking-[0.15em] text-nadya-black/50 dark:text-nadya-cream/50 uppercase">
           {t("yourComment")} *
         </label>
         <textarea
@@ -113,11 +113,11 @@ export function ReviewForm({
           rows={3}
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-          className="w-full resize-none border border-nadya-line bg-nadya-cream px-3 py-2.5 text-sm text-nadya-black focus:border-nadya-gold focus:outline-none"
+          className="w-full resize-none border border-nadya-line dark:border-nadya-gold/15 bg-nadya-cream dark:bg-nadya-black px-3 py-2.5 text-sm text-nadya-black dark:text-nadya-cream focus:border-nadya-gold focus:outline-none"
         />
       </div>
 
-      {errorCode && <p className="text-sm text-red-700">{tErrors(errorCode)}</p>}
+      {errorCode && <p className="text-sm text-red-700 dark:text-red-400">{tErrors(errorCode)}</p>}
 
       <button
         type="submit"

@@ -176,5 +176,23 @@
     "empty": "Votre liste de favoris est vide.",
     "emptyHint": "Enregistrez les pièces que vous aimez pour les retrouver facilement.",
     "browse": "Découvrir la collection"
+  },
+  "Admin": {
+    "Toast": {
+      "productCreated": "Produit créé avec succès",
+      "productUpdated": "Produit mis à jour",
+      "productDeleted": "Produit supprimé",
+      "orderStatusUpdated": "Statut de la commande mis à jour",
+      "couponCreated": "Coupon créé avec succès",
+      "couponActivated": "Coupon activé",
+      "couponDeactivated": "Coupon désactivé",
+      "couponDeleted": "Coupon supprimé",
+      "reviewApproved": "Avis approuvé",
+      "reviewRejected": "Avis rejeté",
+      "categoryCreated": "Catégorie créée avec succès",
+      "categoryUpdated": "Catégorie mise à jour",
+      "categoryDeleted": "Catégorie supprimée",
+      "error": "Une erreur est survenue. Merci de réessayer."
+    }
   }
 }

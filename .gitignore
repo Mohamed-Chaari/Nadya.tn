@@ -36,6 +36,20 @@ yarn-error.log*
 # vercel
 .vercel
 
+# Android signing keystore — must never be committed (contains the app's
+# private signing key). The rest of android-admin-app/ (build config,
+# manifest) is safe to commit.
+android-admin-app/android.keystore
+
+# Android/Gradle build artifacts — regeneratable, not source.
+android-admin-app/.gradle/
+android-admin-app/build/
+android-admin-app/app/build/
+android-admin-app/*.apk
+
+# Claude Code tool runtime state, not project source
+.claude/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

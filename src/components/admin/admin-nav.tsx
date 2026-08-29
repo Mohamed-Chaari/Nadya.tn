@@ -4,10 +4,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { LogoutButton } from "@/components/admin/logout-button";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 const navLinks = [
   { href: "/admin", label: "Commandes", exact: true },
   { href: "/admin/produits", label: "Produits", exact: false },
+  { href: "/admin/categories", label: "Catégories", exact: false },
   { href: "/admin/avis", label: "Avis", exact: false },
   { href: "/admin/coupons", label: "Coupons", exact: false },
   { href: "/admin/clients", label: "Clients", exact: false },
@@ -53,6 +55,7 @@ export function AdminNav({
         </div>
 
         <div className="hidden items-center gap-4 sm:flex">
+          <ThemeToggle className="flex h-9 w-9 items-center justify-center text-nadya-cream/70 hover:text-nadya-cream" />
           <span className="text-xs text-nadya-cream/60">
             {displayName} · {role === "owner" ? "Propriétaire" : "Staff"}
           </span>
@@ -66,9 +69,9 @@ export function AdminNav({
           onClick={() => setMenuOpen((v) => !v)}
         >
           <div className="flex flex-col gap-1.5">
-            <span className="block h-px w-5 bg-nadya-cream" />
-            <span className="block h-px w-5 bg-nadya-cream" />
-            <span className="block h-px w-5 bg-nadya-cream" />
+            <span className="block h-px w-5 bg-nadya-cream dark:bg-nadya-black" />
+            <span className="block h-px w-5 bg-nadya-cream dark:bg-nadya-black" />
+            <span className="block h-px w-5 bg-nadya-cream dark:bg-nadya-black" />
           </div>
         </button>
       </div>
@@ -91,7 +94,10 @@ export function AdminNav({
             <span className="text-xs text-nadya-cream/60">
               {displayName} · {role === "owner" ? "Propriétaire" : "Staff"}
             </span>
-            <LogoutButton />
+            <div className="flex items-center gap-3">
+              <ThemeToggle className="flex h-8 w-8 items-center justify-center text-nadya-cream/70" />
+              <LogoutButton />
+            </div>
           </div>
         </div>
       )}

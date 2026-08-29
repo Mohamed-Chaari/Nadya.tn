@@ -27,11 +27,11 @@ export function SearchBar() {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder={t("searchPlaceholder")}
-        className="w-full border border-nadya-line bg-nadya-cream px-3 py-2 text-sm text-nadya-black placeholder:text-nadya-black/40 focus:border-nadya-gold focus:outline-none"
+        className="w-full border border-nadya-line dark:border-nadya-gold/15 bg-nadya-cream dark:bg-nadya-black px-3 py-2 text-sm text-nadya-black dark:text-nadya-cream placeholder:text-nadya-black/40 dark:text-nadya-cream/40 focus:border-nadya-gold focus:outline-none"
       />
       <button
         type="submit"
-        className="shrink-0 border border-nadya-black px-3 py-2 text-sm text-nadya-black hover:bg-nadya-black hover:text-nadya-cream"
+        className="shrink-0 border border-nadya-black dark:border-nadya-cream px-3 py-2 text-sm text-nadya-black dark:text-nadya-cream hover:bg-nadya-black hover:text-nadya-cream dark:hover:bg-nadya-cream dark:bg-nadya-black dark:hover:text-nadya-black dark:text-nadya-cream"
       >
         {t("search")}
       </button>

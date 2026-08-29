@@ -13,7 +13,7 @@ export function AddToCartForm({ product }: { product: Product }) {
 
   return (
     <div className="flex items-center gap-3">
-      <div className="flex items-center border border-nadya-line">
+      <div className="flex items-center border border-nadya-line dark:border-nadya-gold/15">
         <button
           type="button"
           className="px-3 py-2 text-sm disabled:opacity-30"

@@ -32,7 +32,7 @@ export function WishlistButton({
         fill={active ? "currentColor" : "none"}
         stroke="currentColor"
         strokeWidth="1.8"
-        className={active ? "text-nadya-gold" : "text-nadya-black/60 hover:text-nadya-gold"}
+        className={active ? "text-nadya-gold" : "text-nadya-black/60 dark:text-nadya-cream/60 hover:text-nadya-gold"}
       >
         <path
           d="M12 20.5s-7.5-4.6-10-9.2C.5 8 1.8 4.5 5 3.6c2.1-.6 4.2.3 5.5 2.1C11.8 3.9 13.9 3 16 3.6c3.2.9 4.5 4.4 3 7.7-2.5 4.6-10 9.2-10 9.2Z"
