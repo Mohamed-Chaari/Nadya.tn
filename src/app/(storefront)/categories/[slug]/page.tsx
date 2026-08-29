@@ -28,7 +28,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
   if (!category) notFound();
 
   const sp = await searchParams;
-  const products = getProductsByCategory(slug);
+  const products = await getProductsByCategory(slug);
   const filtered = filterAndSortProducts(products, {
     minPrice: sp.min ? Number(sp.min) : undefined,
     maxPrice: sp.max ? Number(sp.max) : undefined,

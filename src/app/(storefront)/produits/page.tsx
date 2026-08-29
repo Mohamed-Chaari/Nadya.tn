@@ -16,7 +16,7 @@ interface PageProps {
 
 export default async function ProductsPage({ searchParams }: PageProps) {
   const params = await searchParams;
-  const products = getAllProducts();
+  const products = await getAllProducts();
 
   const filtered = filterAndSortProducts(products, {
     categorySlug: typeof params.categorie === "string" ? params.categorie : undefined,

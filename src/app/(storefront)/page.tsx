@@ -4,9 +4,9 @@ import { getFeaturedProducts, getNewProducts } from "@/lib/data/products";
 import { ProductGrid } from "@/components/product/product-grid";
 import { ProductPlaceholderArt } from "@/components/ui/product-placeholder-art";
 
-export default function HomePage() {
-  const featured = getFeaturedProducts();
-  const newArrivals = getNewProducts();
+export default async function HomePage() {
+  const featured = await getFeaturedProducts();
+  const newArrivals = await getNewProducts();
 
   return (
     <div>

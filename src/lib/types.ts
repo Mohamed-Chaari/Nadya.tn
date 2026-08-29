@@ -17,7 +17,6 @@ export interface Product {
   categorySlug: CategorySlug;
   price: number;
   compareAtPrice?: number;
-  currency: "TND";
   images: string[];
   descriptionFr: string;
   materialsFr: string[];

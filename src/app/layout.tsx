@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Jost } from "next/font/google";
 import "./globals.css";
-import { CartProvider } from "@/lib/cart/cart-context";
-import { SiteHeader } from "@/components/layout/site-header";
-import { SiteFooter } from "@/components/layout/site-footer";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -30,11 +27,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${playfair.variable} ${jost.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-nadya-cream font-sans text-nadya-black">
-        <CartProvider>
-          <SiteHeader />
-          <main className="flex-1">{children}</main>
-          <SiteFooter />
-        </CartProvider>
+        {children}
       </body>
     </html>
   );

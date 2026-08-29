@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Product } from "@/lib/types";
 import { formatPrice } from "@/lib/format";
 import { ProductPlaceholderArt } from "@/components/ui/product-placeholder-art";
+import { LOW_STOCK_THRESHOLD } from "@/lib/config/catalog";
 
 export function ProductCard({ product }: { product: Product }) {
   return (
@@ -26,7 +27,7 @@ export function ProductCard({ product }: { product: Product }) {
             Personnalisable
           </span>
         )}
-        {product.stock <= 4 && (
+        {product.stock <= LOW_STOCK_THRESHOLD && (
           <span className="absolute bottom-3 left-3 bg-nadya-cream/95 px-2 py-1 text-[0.6rem] tracking-[0.1em] text-nadya-black/80 uppercase">
             Plus que {product.stock} en stock
           </span>

@@ -1,353 +1,144 @@
+import "server-only";
+import { getSupabaseServiceClient } from "@/lib/supabase/server";
 import type { Product } from "@/lib/types";
 
-export const products: Product[] = [
-  {
-    id: "p-01",
-    slug: "rosee-scintillante",
-    nameFr: "Rosée scintillante",
-    subtitleFr: "Couronne fine ornée de cristaux",
-    categorySlug: "couronnes-tiares",
-    price: 320,
-    compareAtPrice: 380,
-    currency: "TND",
-    images: [],
-    descriptionFr:
-      "Une couronne délicate sertie de cristaux étincelants, pensée pour la mariée qui souhaite une touche de lumière sans excès. Fait main dans notre atelier de Sfax.",
-    materialsFr: ["Métal doré à l'or fin", "Cristaux autrichiens", "Perles nacrées"],
-    stock: 6,
-    isFeatured: true,
-    isNew: false,
-    isCustomizable: false,
-    rating: 4.9,
-    reviewCount: 47,
-    createdAt: "2026-01-15",
-  },
-  {
-    id: "p-02",
-    slug: "couronne-imperiale-doree",
-    nameFr: "Couronne impériale dorée",
-    subtitleFr: "Pièce maîtresse XL pour un look majestueux",
-    categorySlug: "couronnes-tiares",
-    price: 450,
-    currency: "TND",
-    images: [],
-    descriptionFr:
-      "Notre pièce la plus spectaculaire : une tiare haute, richement ornée, pour les mariées qui veulent marquer les esprits.",
-    materialsFr: ["Laiton doré", "Zircons", "Perles d'eau douce"],
-    stock: 3,
-    isFeatured: true,
-    isNew: false,
-    isCustomizable: true,
-    rating: 5,
-    reviewCount: 22,
-    createdAt: "2025-11-02",
-  },
-  {
-    id: "p-03",
-    slug: "halo-de-perles",
-    nameFr: "Halo de perles",
-    subtitleFr: "Couronne basse façon halo",
-    categorySlug: "couronnes-tiares",
-    price: 280,
-    currency: "TND",
-    images: [],
-    descriptionFr:
-      "Un halo discret de perles nacrées qui épouse le front sans alourdir la coiffure — idéal pour un style bohème-chic.",
-    materialsFr: ["Fil doré", "Perles nacrées"],
-    stock: 9,
-    isFeatured: false,
-    isNew: true,
-    isCustomizable: false,
-    rating: 4.7,
-    reviewCount: 15,
-    createdAt: "2026-06-10",
-  },
-  {
-    id: "p-04",
-    slug: "couronne-fleurie-ivoire",
-    nameFr: "Couronne fleurie ivoire",
-    subtitleFr: "Fleurs en tissu et perles ivoire",
-    categorySlug: "couronnes-tiares",
-    price: 300,
-    currency: "TND",
-    images: [],
-    descriptionFr:
-      "Des fleurs délicates en tissu ivoire mêlées à des perles, pour une allure romantique et naturelle.",
-    materialsFr: ["Fleurs en tissu", "Perles ivoire", "Base en métal souple"],
-    stock: 5,
-    isFeatured: false,
-    isNew: false,
-    isCustomizable: false,
-    rating: 4.8,
-    reviewCount: 31,
-    createdAt: "2025-09-20",
-  },
-  {
-    id: "p-05",
-    slug: "collier-lecrin-fleuri",
-    nameFr: "L'écrin fleuri",
-    subtitleFr: "Collier ras-de-cou floral",
-    categorySlug: "colliers",
-    price: 210,
-    currency: "TND",
-    images: [],
-    descriptionFr:
-      "Un collier ras-de-cou orné de motifs floraux délicats, à porter seul ou associé à notre couronne assortie.",
-    materialsFr: ["Métal doré", "Cristaux", "Fermoir ajustable"],
-    stock: 12,
-    isFeatured: true,
-    isNew: false,
-    isCustomizable: false,
-    rating: 4.9,
-    reviewCount: 38,
-    createdAt: "2025-12-05",
-  },
-  {
-    id: "p-06",
-    slug: "collier-goutte-de-lune",
-    nameFr: "Goutte de lune",
-    subtitleFr: "Collier pendentif cristal",
-    categorySlug: "colliers",
-    price: 180,
-    currency: "TND",
-    images: [],
-    descriptionFr:
-      "Un pendentif en forme de goutte, taillé pour capter la lumière — simple, élégant, intemporel.",
-    materialsFr: ["Chaîne dorée fine", "Cristal taillé"],
-    stock: 14,
-    isFeatured: false,
-    isNew: true,
-    isCustomizable: false,
-    rating: 4.6,
-    reviewCount: 9,
-    createdAt: "2026-07-01",
-  },
-  {
-    id: "p-07",
-    slug: "collier-reine-de-saba",
-    nameFr: "Reine de Saba",
-    subtitleFr: "Collier statement multi-rangs",
-    categorySlug: "colliers",
-    price: 390,
-    compareAtPrice: 430,
-    currency: "TND",
-    images: [],
-    descriptionFr:
-      "Un collier multi-rangs richement orné, inspiré des parures royales — pour les mariées qui aiment les pièces fortes.",
-    materialsFr: ["Laiton doré", "Perles nacrées", "Cristaux"],
-    stock: 4,
-    isFeatured: true,
-    isNew: false,
-    isCustomizable: true,
-    rating: 5,
-    reviewCount: 18,
-    createdAt: "2025-10-12",
-  },
-  {
-    id: "p-08",
-    slug: "collier-brume-doree",
-    nameFr: "Brume dorée",
-    subtitleFr: "Collier fin chaîne double",
-    categorySlug: "colliers",
-    price: 150,
-    currency: "TND",
-    images: [],
-    descriptionFr:
-      "Une double chaîne fine et légère, pour twister une tenue simple avec une touche dorée discrète.",
-    materialsFr: ["Chaîne dorée", "Breloques cristal"],
-    stock: 20,
-    isFeatured: false,
-    isNew: false,
-    isCustomizable: false,
-    rating: 4.5,
-    reviewCount: 26,
-    createdAt: "2025-08-18",
-  },
-  {
-    id: "p-09",
-    slug: "peigne-reine-de-cristal",
-    nameFr: "Peigne reine de cristal",
-    subtitleFr: "Peigne orné haute couture",
-    categorySlug: "peignes",
-    price: 240,
-    currency: "TND",
-    images: [],
-    descriptionFr:
-      "Un peigne richement orné de cristaux, sculpté pour se glisser élégamment dans un chignon ou une coiffure relevée.",
-    materialsFr: ["Métal doré", "Cristaux autrichiens", "Dents en acier inoxydable"],
-    stock: 7,
-    isFeatured: true,
-    isNew: false,
-    isCustomizable: false,
-    rating: 4.9,
-    reviewCount: 41,
-    createdAt: "2025-11-28",
-  },
-  {
-    id: "p-10",
-    slug: "peigne-feuille-doree",
-    nameFr: "Feuille dorée",
-    subtitleFr: "Peigne motif feuillage",
-    categorySlug: "peignes",
-    price: 160,
-    currency: "TND",
-    images: [],
-    descriptionFr:
-      "Un peigne inspiré du feuillage doré, léger et facile à porter, pour une touche nature-chic.",
-    materialsFr: ["Métal doré", "Perles nacrées"],
-    stock: 11,
-    isFeatured: false,
-    isNew: true,
-    isCustomizable: false,
-    rating: 4.7,
-    reviewCount: 6,
-    createdAt: "2026-06-25",
-  },
-  {
-    id: "p-11",
-    slug: "peigne-etoile-du-soir",
-    nameFr: "Étoile du soir",
-    subtitleFr: "Peigne pièce unique cristaux",
-    categorySlug: "peignes",
-    price: 275,
-    currency: "TND",
-    images: [],
-    descriptionFr:
-      "Un peigne compact serti de cristaux en forme d'étoile, pour ajouter une touche scintillante sans excès.",
-    materialsFr: ["Métal doré", "Cristaux"],
-    stock: 8,
-    isFeatured: false,
-    isNew: false,
-    isCustomizable: false,
-    rating: 4.8,
-    reviewCount: 19,
-    createdAt: "2025-07-14",
-  },
-  {
-    id: "p-12",
-    slug: "peigne-jardin-ivoire",
-    nameFr: "Jardin ivoire",
-    subtitleFr: "Peigne floral perlé",
-    categorySlug: "peignes",
-    price: 195,
-    currency: "TND",
-    images: [],
-    descriptionFr:
-      "Des petites fleurs perlées ivoire disposées avec finesse sur un peigne discret — parfait pour un style champêtre.",
-    materialsFr: ["Métal doré", "Perles ivoire", "Fleurs en résine"],
-    stock: 10,
-    isFeatured: false,
-    isNew: false,
-    isCustomizable: false,
-    rating: 4.6,
-    reviewCount: 13,
-    createdAt: "2025-09-30",
-  },
-  {
-    id: "p-13",
-    slug: "hair-vine-fil-de-lumiere",
-    nameFr: "Fil de lumière",
-    subtitleFr: "Hair vine cristaux et perles",
-    categorySlug: "hair-vines",
-    price: 260,
-    currency: "TND",
-    images: [],
-    descriptionFr:
-      "Une chaîne souple sertie de cristaux et perles, à draper sur une coiffure lâchée ou tressée pour un effet lumineux.",
-    materialsFr: ["Fil doré souple", "Cristaux", "Perles nacrées"],
-    stock: 9,
-    isFeatured: true,
-    isNew: false,
-    isCustomizable: false,
-    rating: 4.9,
-    reviewCount: 24,
-    createdAt: "2025-12-20",
-  },
-  {
-    id: "p-14",
-    slug: "hair-vine-cascade-nacree",
-    nameFr: "Cascade nacrée",
-    subtitleFr: "Hair vine longue double rang",
-    categorySlug: "hair-vines",
-    price: 310,
-    compareAtPrice: 350,
-    currency: "TND",
-    images: [],
-    descriptionFr:
-      "Une longue chaîne double rang qui cascade délicatement le long de la coiffure — un effet très photogénique.",
-    materialsFr: ["Fil doré souple", "Perles nacrées", "Cristaux"],
-    stock: 5,
-    isFeatured: false,
-    isNew: true,
-    isCustomizable: false,
-    rating: 5,
-    reviewCount: 11,
-    createdAt: "2026-05-15",
-  },
-  {
-    id: "p-15",
-    slug: "hair-vine-murmure-dor",
-    nameFr: "Murmure d'or",
-    subtitleFr: "Hair vine fine minimaliste",
-    categorySlug: "hair-vines",
-    price: 140,
-    currency: "TND",
-    images: [],
-    descriptionFr:
-      "Une chaîne très fine et discrète, pour les mariées qui préfèrent la sobriété avec juste ce qu'il faut d'éclat.",
-    materialsFr: ["Fil doré fin"],
-    stock: 16,
-    isFeatured: false,
-    isNew: false,
-    isCustomizable: false,
-    rating: 4.5,
-    reviewCount: 8,
-    createdAt: "2025-08-02",
-  },
-  {
-    id: "p-16",
-    slug: "hair-vine-couronne-de-vigne",
-    nameFr: "Couronne de vigne",
-    subtitleFr: "Hair vine style bohème",
-    categorySlug: "hair-vines",
-    price: 230,
-    currency: "TND",
-    images: [],
-    descriptionFr:
-      "Inspirée des vignes fleuries, cette hair vine tressée apporte une touche bohème et naturelle à la coiffure.",
-    materialsFr: ["Fil doré souple", "Perles nacrées", "Petites fleurs en résine"],
-    stock: 7,
-    isFeatured: false,
-    isNew: false,
-    isCustomizable: false,
-    rating: 4.7,
-    reviewCount: 17,
-    createdAt: "2025-10-28",
-  },
-];
-
-export function getAllProducts(): Product[] {
-  return products;
+interface ProductRow {
+  id: string;
+  slug: string;
+  name_fr: string;
+  subtitle_fr: string;
+  category_slug: Product["categorySlug"];
+  price: number;
+  compare_at_price: number | null;
+  images: string[];
+  description_fr: string;
+  materials_fr: string[];
+  stock: number;
+  is_featured: boolean;
+  is_new: boolean;
+  is_customizable: boolean;
+  rating: number;
+  review_count: number;
+  created_at: string;
 }
 
-export function getProductBySlug(slug: string): Product | undefined {
-  return products.find((p) => p.slug === slug);
+function mapRow(row: ProductRow): Product {
+  return {
+    id: row.id,
+    slug: row.slug,
+    nameFr: row.name_fr,
+    subtitleFr: row.subtitle_fr,
+    categorySlug: row.category_slug,
+    price: Number(row.price),
+    compareAtPrice: row.compare_at_price != null ? Number(row.compare_at_price) : undefined,
+    images: row.images,
+    descriptionFr: row.description_fr,
+    materialsFr: row.materials_fr,
+    stock: row.stock,
+    isFeatured: row.is_featured,
+    isNew: row.is_new,
+    isCustomizable: row.is_customizable,
+    rating: Number(row.rating),
+    reviewCount: row.review_count,
+    createdAt: row.created_at,
+  };
 }
 
-export function getProductsByCategory(categorySlug: string): Product[] {
-  return products.filter((p) => p.categorySlug === categorySlug);
+export async function getAllProducts(): Promise<Product[]> {
+  const supabase = getSupabaseServiceClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("[getAllProducts]", error);
+    return [];
+  }
+  return (data as ProductRow[]).map(mapRow);
 }
 
-export function getFeaturedProducts(): Product[] {
-  return products.filter((p) => p.isFeatured);
+export async function getProductBySlug(slug: string): Promise<Product | undefined> {
+  const supabase = getSupabaseServiceClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("slug", slug)
+    .maybeSingle();
+
+  if (error || !data) return undefined;
+  return mapRow(data as ProductRow);
 }
 
-export function getNewProducts(): Product[] {
-  return products.filter((p) => p.isNew);
+export async function getProductById(id: string): Promise<Product | undefined> {
+  const supabase = getSupabaseServiceClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (error || !data) return undefined;
+  return mapRow(data as ProductRow);
 }
 
-export function getRelatedProducts(product: Product, limit = 4): Product[] {
-  return products
-    .filter((p) => p.categorySlug === product.categorySlug && p.id !== product.id)
-    .slice(0, limit);
+export async function getProductsByCategory(categorySlug: string): Promise<Product[]> {
+  const supabase = getSupabaseServiceClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("category_slug", categorySlug)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("[getProductsByCategory]", error);
+    return [];
+  }
+  return (data as ProductRow[]).map(mapRow);
+}
+
+export async function getFeaturedProducts(): Promise<Product[]> {
+  const supabase = getSupabaseServiceClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("is_featured", true)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("[getFeaturedProducts]", error);
+    return [];
+  }
+  return (data as ProductRow[]).map(mapRow);
+}
+
+export async function getNewProducts(): Promise<Product[]> {
+  const supabase = getSupabaseServiceClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("is_new", true)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("[getNewProducts]", error);
+    return [];
+  }
+  return (data as ProductRow[]).map(mapRow);
+}
+
+export async function getRelatedProducts(product: Product, limit = 4): Promise<Product[]> {
+  const supabase = getSupabaseServiceClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("category_slug", product.categorySlug)
+    .neq("id", product.id)
+    .limit(limit);
+
+  if (error) {
+    console.error("[getRelatedProducts]", error);
+    return [];
+  }
+  return (data as ProductRow[]).map(mapRow);
 }
