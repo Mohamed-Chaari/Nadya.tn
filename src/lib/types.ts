@@ -1,5 +1,7 @@
 export type CategorySlug = "couronnes-tiares" | "colliers" | "peignes" | "hair-vines";
 
+export type OrderStatus = "pending" | "confirmed" | "shipped" | "delivered" | "cancelled";
+
 export interface Category {
   slug: CategorySlug;
   nameFr: string;
