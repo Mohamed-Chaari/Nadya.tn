@@ -22,5 +22,5 @@ jobs:
       - name: Ping Supabase REST API
         run: |
           curl -sf -o /dev/null -w "Supabase responded: %{http_code}\n" \
-            "${{ secrets.SUPABASE_URL }}/rest/v1/" \
+            "${{ secrets.SUPABASE_URL }}/rest/v1/products?select=id&limit=1" \
             -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}"
