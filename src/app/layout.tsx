@@ -1,9 +1,7 @@
-import type { Metadata } from "next";
-import { Playfair_Display, Jost } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Playfair_Display, Jost, Amiri, Cairo } from "next/font/google";
 import "./globals.css";
-import { CartProvider } from "@/lib/cart/cart-context";
-import { SiteHeader } from "@/components/layout/site-header";
-import { SiteFooter } from "@/components/layout/site-footer";
+import { ServiceWorkerRegister } from "@/components/pwa/service-worker-register";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -17,24 +15,79 @@ const jost = Jost({
   weight: ["300", "400", "500", "600"],
 });
 
+const amiri = Amiri({
+  variable: "--font-amiri",
+  subsets: ["arabic"],
+  weight: ["400", "700"],
+});
+
+const cairo = Cairo({
+  variable: "--font-cairo",
+  subsets: ["arabic"],
+  weight: ["300", "400", "500", "600"],
+});
+
 export const metadata: Metadata = {
   title: "NADYA — Art & Handcraft | Bijoux de mariée artisanaux",
   description:
     "NADYA — Art & Handcraft, à Sfax depuis 2023. Couronnes, tiares, peignes et bijoux de cheveux artisanaux pour femmes inoubliables.",
+  manifest: "/manifest.json",
+  icons: {
+    icon: [
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
 };
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f8f3ea" },
+    { media: "(prefers-color-scheme: dark)", color: "#141210" },
+  ],
+};
+
+// Runs before paint so /ar and /en routes never flash the fr/ltr default
+// from the static <html> attributes below. See suppressHydrationWarning.
+const SYNC_HTML_DIR_SCRIPT = `
+(function () {
+  var m = window.location.pathname.match(/^\\/(ar|en|fr)(\\/|$)/);
+  var locale = m ? m[1] : "fr";
+  document.documentElement.lang = locale;
+  document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
+})();
+`;
+
+// Runs before paint so the page never flashes the light theme before
+// switching to a stored/system dark preference. Same blocking-script
+// pattern as SYNC_HTML_DIR_SCRIPT, for the same reason.
+// "nadya-theme" is "light" | "dark" | "system" | absent (absent and
+// "system" behave identically: follow the OS preference).
+const SYNC_THEME_SCRIPT = `
+(function () {
+  var stored = null;
+  try { stored = localStorage.getItem("nadya-theme"); } catch (e) {}
+  var isDark = stored === "dark" || ((!stored || stored === "system") && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  if (isDark) document.documentElement.classList.add("dark");
+})();
+`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="fr"
-      className={`${playfair.variable} ${jost.variable} h-full antialiased`}
+      dir="ltr"
+      suppressHydrationWarning
+      className={`${playfair.variable} ${jost.variable} ${amiri.variable} ${cairo.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-nadya-cream font-sans text-nadya-black">
-        <CartProvider>
-          <SiteHeader />
-          <main className="flex-1">{children}</main>
-          <SiteFooter />
-        </CartProvider>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: SYNC_HTML_DIR_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: SYNC_THEME_SCRIPT }} />
+      </head>
+      <body className="min-h-full flex flex-col bg-nadya-cream dark:bg-nadya-black text-nadya-black dark:text-nadya-cream font-sans">
+        <ServiceWorkerRegister />
+        {children}
       </body>
     </html>
   );

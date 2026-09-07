@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { tunisiaGovernorates } from "@/lib/data/tunisia-locations";
 import { normalizeForSearch } from "@/lib/text";
 
@@ -16,17 +17,18 @@ interface LocationSelectorProps {
 }
 
 const fieldClass =
-  "w-full border border-nadya-line bg-nadya-cream px-3 py-2.5 text-sm text-nadya-black focus:border-nadya-gold focus:outline-none disabled:opacity-50";
-const labelClass = "mb-1.5 block text-xs tracking-[0.15em] text-nadya-black/50 uppercase";
+  "w-full border border-nadya-line dark:border-nadya-gold/15 bg-nadya-cream dark:bg-nadya-black px-3 py-2.5 text-sm text-nadya-black dark:text-nadya-cream focus:border-nadya-gold focus:outline-none disabled:opacity-50";
+const labelClass = "mb-1.5 block text-xs tracking-[0.15em] text-nadya-black/50 dark:text-nadya-cream/50 uppercase";
 
 export function LocationSelector({ value, onChange }: LocationSelectorProps) {
+  const t = useTranslations("Checkout");
   const selectedGovernorate = tunisiaGovernorates.find((g) => g.name === value.gouvernorat);
   const delegations = selectedGovernorate?.delegations ?? [];
 
   return (
     <div className="grid gap-5 sm:grid-cols-2">
       <div>
-        <label className={labelClass}>Gouvernorat *</label>
+        <label className={labelClass}>{t("gouvernorat")} *</label>
         <select
           required
           value={value.gouvernorat}
@@ -36,7 +38,7 @@ export function LocationSelector({ value, onChange }: LocationSelectorProps) {
           className={fieldClass}
         >
           <option value="" disabled>
-            Sélectionner...
+            {t("selectPlaceholder")}
           </option>
           {tunisiaGovernorates.map((g) => (
             <option key={g.name} value={g.name}>
@@ -54,12 +56,12 @@ export function LocationSelector({ value, onChange }: LocationSelectorProps) {
       />
 
       <div className="sm:col-span-2">
-        <label className={labelClass}>Localité (optionnel)</label>
+        <label className={labelClass}>{t("localityOptional")}</label>
         <input
           type="text"
           value={value.localite}
           onChange={(e) => onChange({ ...value, localite: e.target.value })}
-          placeholder="Quartier, cité, village..."
+          placeholder={t("localityPlaceholder")}
           className={fieldClass}
         />
       </div>
@@ -78,6 +80,7 @@ function DelegationCombobox({
   disabled: boolean;
   onChange: (value: string) => void;
 }) {
+  const t = useTranslations("Checkout");
   const [query, setQuery] = useState("");
   const [isOpen, setOpen] = useState(false);
   const blurTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -96,13 +99,13 @@ function DelegationCombobox({
 
   return (
     <div className="relative">
-      <label className={labelClass}>Délégation *</label>
+      <label className={labelClass}>{t("delegation")} *</label>
       <input
         type="text"
         required
         disabled={disabled}
         value={isOpen ? query : value}
-        placeholder={disabled ? "Choisir un gouvernorat d'abord" : "Rechercher..."}
+        placeholder={disabled ? t("chooseGouvernoratFirst") : t("searchPlaceholder")}
         onFocus={() => {
           setQuery("");
           setOpen(true);
@@ -117,9 +120,9 @@ function DelegationCombobox({
         className={fieldClass}
       />
       {isOpen && !disabled && (
-        <ul className="absolute z-10 mt-1 max-h-56 w-full overflow-y-auto border border-nadya-line bg-nadya-cream shadow-lg">
+        <ul className="absolute z-10 mt-1 max-h-56 w-full overflow-y-auto border border-nadya-line dark:border-nadya-gold/15 bg-nadya-cream dark:bg-nadya-black shadow-lg">
           {filtered.length === 0 ? (
-            <li className="px-3 py-2 text-sm text-nadya-black/50">Aucun résultat</li>
+            <li className="px-3 py-2 text-sm text-nadya-black/50 dark:text-nadya-cream/50">{t("noResults")}</li>
           ) : (
             filtered.map((option) => (
               <li key={option}>
@@ -130,8 +133,8 @@ function DelegationCombobox({
                     if (blurTimeout.current) clearTimeout(blurTimeout.current);
                     selectOption(option);
                   }}
-                  className={`block w-full px-3 py-2 text-left text-sm hover:bg-nadya-pearl ${
-                    option === value ? "bg-nadya-pearl font-medium" : ""
+                  className={`block w-full px-3 py-2 text-start text-sm hover:bg-nadya-pearl dark:bg-nadya-onyx ${
+                    option === value ? "bg-nadya-pearl dark:bg-nadya-onyx font-medium" : ""
                   }`}
                 >
                   {option}

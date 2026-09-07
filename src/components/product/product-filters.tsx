@@ -1,26 +1,45 @@
 "use client";
 
-import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { categories } from "@/lib/data/categories";
-
-const sortOptions: { value: string; label: string }[] = [
-  { value: "featured", label: "Mise en avant" },
-  { value: "newest", label: "Nouveautés" },
-  { value: "price-asc", label: "Prix croissant" },
-  { value: "price-desc", label: "Prix décroissant" },
-];
+import { useSearchParams } from "next/navigation";
+import { useTranslations, useLocale } from "next-intl";
+import { useRouter, usePathname } from "@/i18n/navigation";
+import { getCategoryName } from "@/lib/category-i18n";
+import { formatPrice } from "@/lib/format";
+import type { Category } from "@/lib/types";
 
 const priceRanges = [
-  { label: "Tous les prix", min: undefined, max: undefined },
-  { label: "Moins de 200 DT", min: undefined, max: 200 },
-  { label: "200 – 350 DT", min: 200, max: 350 },
-  { label: "Plus de 350 DT", min: 350, max: undefined },
-];
+  { key: "all", min: undefined, max: undefined },
+  { key: "under", min: undefined, max: 200 },
+  { key: "range", min: 200, max: 350 },
+  { key: "over", min: 350, max: undefined },
+] as const;
 
-export function ProductFilters({ showCategoryFilter = true }: { showCategoryFilter?: boolean }) {
+export function ProductFilters({
+  categories,
+  showCategoryFilter = true,
+}: {
+  categories: Category[];
+  showCategoryFilter?: boolean;
+}) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const t = useTranslations("Products");
+  const locale = useLocale();
+
+  const sortOptions = [
+    { value: "featured", label: t("sortFeatured") },
+    { value: "newest", label: t("sortNewest") },
+    { value: "price-asc", label: t("sortPriceAsc") },
+    { value: "price-desc", label: t("sortPriceDesc") },
+  ];
+
+  function priceRangeLabel(range: (typeof priceRanges)[number]) {
+    if (range.key === "all") return t("allPrices");
+    if (range.key === "under") return t("under", { amount: formatPrice(range.max!) });
+    if (range.key === "over") return t("over", { amount: formatPrice(range.min!) });
+    return t("range", { min: formatPrice(range.min!), max: formatPrice(range.max!) });
+  }
 
   function updateParam(key: string, value: string | undefined) {
     const params = new URLSearchParams(searchParams.toString());
@@ -39,8 +58,8 @@ export function ProductFilters({ showCategoryFilter = true }: { showCategoryFilt
       <div className="flex flex-wrap gap-x-6 gap-y-4">
         {showCategoryFilter && (
           <div>
-            <p className="mb-2 text-xs tracking-[0.15em] text-nadya-black/50 uppercase">
-              Catégorie
+            <p className="mb-2 text-xs tracking-[0.15em] text-nadya-black/50 dark:text-nadya-cream/50 uppercase">
+              {t("category")}
             </p>
             <div className="flex flex-wrap gap-2">
               <button
@@ -49,10 +68,10 @@ export function ProductFilters({ showCategoryFilter = true }: { showCategoryFilt
                 className={`border px-3 py-1.5 text-sm transition ${
                   activeCategory === ""
                     ? "border-nadya-black bg-nadya-black text-nadya-cream"
-                    : "border-nadya-line text-nadya-black/70 hover:border-nadya-black"
+                    : "border-nadya-line dark:border-nadya-gold/15 text-nadya-black/70 dark:text-nadya-cream/70 hover:border-nadya-black dark:hover:border-nadya-cream"
                 }`}
               >
-                Toutes
+                {t("allCategories")}
               </button>
               {categories.map((c) => (
                 <button
@@ -62,10 +81,10 @@ export function ProductFilters({ showCategoryFilter = true }: { showCategoryFilt
                   className={`border px-3 py-1.5 text-sm transition ${
                     activeCategory === c.slug
                       ? "border-nadya-black bg-nadya-black text-nadya-cream"
-                      : "border-nadya-line text-nadya-black/70 hover:border-nadya-black"
+                      : "border-nadya-line dark:border-nadya-gold/15 text-nadya-black/70 dark:text-nadya-cream/70 hover:border-nadya-black dark:hover:border-nadya-cream"
                   }`}
                 >
-                  {c.nameFr}
+                  {getCategoryName(c, locale)}
                 </button>
               ))}
             </div>
@@ -73,7 +92,9 @@ export function ProductFilters({ showCategoryFilter = true }: { showCategoryFilt
         )}
 
         <div>
-          <p className="mb-2 text-xs tracking-[0.15em] text-nadya-black/50 uppercase">Prix</p>
+          <p className="mb-2 text-xs tracking-[0.15em] text-nadya-black/50 dark:text-nadya-cream/50 uppercase">
+            {t("price")}
+          </p>
           <div className="flex flex-wrap gap-2">
             {priceRanges.map((range) => {
               const isActive =
@@ -81,7 +102,7 @@ export function ProductFilters({ showCategoryFilter = true }: { showCategoryFilt
                 (activeMax ?? "") === (range.max?.toString() ?? "");
               return (
                 <button
-                  key={range.label}
+                  key={range.key}
                   type="button"
                   onClick={() => {
                     const params = new URLSearchParams(searchParams.toString());
@@ -94,10 +115,10 @@ export function ProductFilters({ showCategoryFilter = true }: { showCategoryFilt
                   className={`border px-3 py-1.5 text-sm transition ${
                     isActive
                       ? "border-nadya-black bg-nadya-black text-nadya-cream"
-                      : "border-nadya-line text-nadya-black/70 hover:border-nadya-black"
+                      : "border-nadya-line dark:border-nadya-gold/15 text-nadya-black/70 dark:text-nadya-cream/70 hover:border-nadya-black dark:hover:border-nadya-cream"
                   }`}
                 >
-                  {range.label}
+                  {priceRangeLabel(range)}
                 </button>
               );
             })}
@@ -106,13 +127,13 @@ export function ProductFilters({ showCategoryFilter = true }: { showCategoryFilt
       </div>
 
       <div className="shrink-0">
-        <label className="mb-2 block text-xs tracking-[0.15em] text-nadya-black/50 uppercase">
-          Trier par
+        <label className="mb-2 block text-xs tracking-[0.15em] text-nadya-black/50 dark:text-nadya-cream/50 uppercase">
+          {t("sortBy")}
         </label>
         <select
           value={activeSort}
           onChange={(e) => updateParam("tri", e.target.value)}
-          className="border border-nadya-line bg-nadya-cream px-3 py-1.5 text-sm text-nadya-black"
+          className="border border-nadya-line dark:border-nadya-gold/15 bg-nadya-cream dark:bg-nadya-black px-3 py-1.5 text-sm text-nadya-black dark:text-nadya-cream"
         >
           {sortOptions.map((opt) => (
             <option key={opt.value} value={opt.value}>

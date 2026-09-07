@@ -1,3 +1,5 @@
+import { useTranslations } from "next-intl";
+
 export function ProductRating({
   rating,
   reviewCount,
@@ -5,6 +7,8 @@ export function ProductRating({
   rating: number;
   reviewCount: number;
 }) {
+  const t = useTranslations("ProductDetail");
+
   return (
     <div className="flex items-center gap-2">
       <div className="flex text-nadya-gold" aria-hidden>
@@ -12,8 +16,8 @@ export function ProductRating({
           <span key={i}>{i < Math.round(rating) ? "★" : "☆"}</span>
         ))}
       </div>
-      <span className="text-sm text-nadya-black/60">
-        {rating.toFixed(1)} ({reviewCount} avis)
+      <span className="text-sm text-nadya-black/60 dark:text-nadya-cream/60">
+        {rating.toFixed(1)} ({t("reviews", { count: reviewCount })})
       </span>
     </div>
   );

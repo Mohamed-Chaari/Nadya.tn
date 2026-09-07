@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "tn.nadyacraft.admin",
+      "sha256_cert_fingerprints": [
+        "EA:33:A9:90:57:A1:3B:1D:A6:D2:6E:69:D2:4A:AE:16:CA:B6:AD:86:73:F8:4E:FE:D3:9B:79:CD:2E:76:E8:81"
+      ]
+    }
+  }
+]
