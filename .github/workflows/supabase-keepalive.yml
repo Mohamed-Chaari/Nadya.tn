@@ -1,0 +1,26 @@
+name: Supabase Keep-Alive
+
+# Supabase's free tier auto-pauses a project after 7 days with no activity.
+# This pings the REST API every 3 days so the project is never idle long
+# enough to trigger that. A failed run (visible in the Actions tab, and
+# emailed to watchers by default) is also a useful early signal that the
+# project is unreachable or has been paused for another reason.
+#
+# NOTE: GitHub only fires `schedule` triggers from the repository's default
+# branch. If this file lives only on a feature branch, the cron below will
+# not run until it's merged into the default branch.
+
+on:
+  schedule:
+    - cron: "0 6 */3 * *"
+  workflow_dispatch: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase REST API
+        run: |
+          curl -sf -o /dev/null -w "Supabase responded: %{http_code}\n" \
+            "${{ secrets.SUPABASE_URL }}/rest/v1/" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}"
