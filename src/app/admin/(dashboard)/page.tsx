@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getAllOrders } from "@/lib/orders/get-orders";
 import { OrderStatusBadge } from "@/components/admin/order-status-badge";
 import { OrderActionButtons } from "@/components/admin/order-action-buttons";
+import { WhatsAppNotifyButton } from "@/components/admin/whatsapp-notify-button";
 import { formatPrice } from "@/lib/format";
 import type { OrderStatus } from "@/lib/types";
 
@@ -71,6 +72,11 @@ export default async function AdminOrdersPage({ searchParams }: PageProps) {
                       #{order.orderNumber}
                     </span>
                     <OrderStatusBadge status={order.status} />
+                    {order.customerOrderCount > 1 && (
+                      <span className="rounded-full bg-nadya-gold/15 px-2.5 py-1 text-xs font-medium text-nadya-gold-dark">
+                        🌟 Client fidèle ({order.customerOrderCount})
+                      </span>
+                    )}
                   </div>
                   <p className="mt-1 text-sm text-nadya-black/70 dark:text-nadya-cream/70">{order.customerName}</p>
                   <a
@@ -95,8 +101,14 @@ export default async function AdminOrdersPage({ searchParams }: PageProps) {
 
               <p className="mt-3 text-sm text-nadya-black/70 dark:text-nadya-cream/70">{order.itemSummary}</p>
 
-              <div className="mt-4">
+              <div className="mt-4 flex flex-wrap gap-2">
                 <OrderActionButtons orderId={order.id} status={order.status} />
+                <WhatsAppNotifyButton
+                  phone={order.customerPhone}
+                  name={order.customerName}
+                  orderNumber={order.orderNumber}
+                  status={order.status}
+                />
               </div>
             </div>
           ))}

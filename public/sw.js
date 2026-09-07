@@ -40,3 +40,38 @@ self.addEventListener("fetch", (event) => {
     );
   }
 });
+
+// Admin new-order push notifications (Web Push API — free, no third-party
+// SMS/WhatsApp service). Payload shape is set in src/lib/notifications/push-send.ts.
+self.addEventListener("push", (event) => {
+  if (!event.data) return;
+  let payload;
+  try {
+    payload = event.data.json();
+  } catch {
+    return;
+  }
+
+  event.waitUntil(
+    self.registration.showNotification(payload.title, {
+      body: payload.body,
+      icon: "/admin-icons/icon-192.png",
+      badge: "/admin-icons/icon-192.png",
+      data: { url: payload.url || "/admin" },
+    })
+  );
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const targetUrl = event.notification.data?.url || "/admin";
+
+  event.waitUntil(
+    self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clients) => {
+      for (const client of clients) {
+        if (client.url.includes(targetUrl) && "focus" in client) return client.focus();
+      }
+      return self.clients.openWindow(targetUrl);
+    })
+  );
+});

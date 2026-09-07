@@ -11,6 +11,7 @@ export interface AdminOrderListItem {
   total: number;
   createdAt: string;
   itemSummary: string;
+  customerOrderCount: number;
 }
 
 export async function getAllOrders(): Promise<AdminOrderListItem[]> {
@@ -37,6 +38,11 @@ export async function getAllOrders(): Promise<AdminOrderListItem[]> {
     summaryByOrder.set(item.order_id, existing ? `${existing}, ${piece}` : piece);
   }
 
+  const countByPhone = new Map<string, number>();
+  for (const o of orders) {
+    countByPhone.set(o.customer_phone, (countByPhone.get(o.customer_phone) ?? 0) + 1);
+  }
+
   return orders.map((o) => ({
     id: o.id,
     orderNumber: o.order_number,
@@ -46,5 +52,6 @@ export async function getAllOrders(): Promise<AdminOrderListItem[]> {
     total: Number(o.total),
     createdAt: o.created_at,
     itemSummary: summaryByOrder.get(o.id) ?? "",
+    customerOrderCount: countByPhone.get(o.customer_phone) ?? 1,
   }));
 }

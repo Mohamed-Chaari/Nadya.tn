@@ -4,11 +4,12 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { useCart } from "@/lib/cart/cart-context";
-import { createOrder } from "@/lib/orders/actions";
+import { createOrder, lookupReturningCustomer } from "@/lib/orders/actions";
 import { checkCoupon } from "@/lib/coupons/actions";
 import { formatPrice } from "@/lib/format";
 import { LocationSelector, type LocationValue } from "@/components/checkout/location-selector";
 import { SHIPPING_FEE } from "@/lib/config/shipping";
+import { LOYALTY_DISCOUNT_RATE } from "@/lib/config/loyalty";
 
 const tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
 
@@ -42,6 +43,8 @@ export function CheckoutForm() {
   );
   const [couponError, setCouponError] = useState<string | null>(null);
   const [isCheckingCoupon, setCheckingCoupon] = useState(false);
+  const [isReturningCustomer, setReturningCustomer] = useState(false);
+  const [checkedPhone, setCheckedPhone] = useState("");
 
   const t = useTranslations("Checkout");
   const tCart = useTranslations("Cart");
@@ -74,7 +77,33 @@ export function CheckoutForm() {
     setCouponError(null);
   }
 
-  const total = Math.max(0, subtotal + SHIPPING_FEE - (appliedCoupon?.discount ?? 0));
+  async function handlePhoneBlur() {
+    const phone = form.customerPhone.trim();
+    if (!phone || phone.replace(/\D/g, "").length < 8 || phone === checkedPhone) return;
+    setCheckedPhone(phone);
+
+    const previous = await lookupReturningCustomer(phone);
+    if (!previous) {
+      setReturningCustomer(false);
+      return;
+    }
+
+    setReturningCustomer(true);
+    if (!form.customerName.trim()) updateField("customerName", previous.name);
+    if (!form.customerAddress.trim()) updateField("customerAddress", previous.address);
+    if (!location.gouvernorat) {
+      setLocation({
+        gouvernorat: previous.gouvernorat,
+        delegation: previous.delegation,
+        localite: previous.localite ?? "",
+      });
+    }
+  }
+
+  const loyaltyDiscount =
+    !appliedCoupon && isReturningCustomer ? Math.round(subtotal * LOYALTY_DISCOUNT_RATE * 1000) / 1000 : 0;
+  const discount = appliedCoupon?.discount ?? loyaltyDiscount;
+  const total = Math.max(0, subtotal + SHIPPING_FEE - discount);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -131,9 +160,16 @@ export function CheckoutForm() {
             placeholder="+216 XX XXX XXX"
             value={form.customerPhone}
             onChange={(e) => updateField("customerPhone", e.target.value)}
+            onBlur={handlePhoneBlur}
             className="w-full border border-nadya-line dark:border-nadya-gold/15 bg-nadya-cream dark:bg-nadya-black px-3 py-2.5 text-sm text-nadya-black dark:text-nadya-cream focus:border-nadya-gold focus:outline-none"
           />
           <p className="mt-1 text-xs text-nadya-black/50 dark:text-nadya-cream/50">{t("phoneHelp")}</p>
+          {isReturningCustomer && (
+            <p className="mt-1.5 text-xs text-nadya-gold-dark">
+              Bienvenue à nouveau ! Vos informations ont été pré-remplies et vous bénéficiez de{" "}
+              {Math.round(LOYALTY_DISCOUNT_RATE * 100)}% de réduction fidélité 💛
+            </p>
+          )}
         </div>
 
         <div>
@@ -243,10 +279,10 @@ export function CheckoutForm() {
             <span className="text-nadya-black/70 dark:text-nadya-cream/70">{tCart("shipping")}</span>
             <span className="text-nadya-black dark:text-nadya-cream">{formatPrice(SHIPPING_FEE)}</span>
           </div>
-          {appliedCoupon && (
+          {discount > 0 && (
             <div className="flex items-center justify-between text-nadya-gold-dark">
-              <span>{t("discount")}</span>
-              <span>-{formatPrice(appliedCoupon.discount)}</span>
+              <span>{appliedCoupon ? t("discount") : "Réduction fidélité"}</span>
+              <span>-{formatPrice(discount)}</span>
             </div>
           )}
           <div className="flex items-center justify-between border-t border-nadya-line dark:border-nadya-gold/15 pt-1.5 text-base font-medium text-nadya-black dark:text-nadya-cream">

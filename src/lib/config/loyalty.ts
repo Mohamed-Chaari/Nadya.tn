@@ -1,0 +1,1 @@
+export const LOYALTY_DISCOUNT_RATE = 0.05;

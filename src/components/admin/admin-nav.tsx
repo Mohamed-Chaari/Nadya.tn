@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { LogoutButton } from "@/components/admin/logout-button";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { PushNotificationToggle } from "@/components/admin/push-notification-toggle";
 
 const navLinks = [
   { href: "/admin", label: "Commandes", exact: true },
@@ -55,6 +56,7 @@ export function AdminNav({
         </div>
 
         <div className="hidden items-center gap-4 sm:flex">
+          <PushNotificationToggle className="flex h-9 w-9 items-center justify-center text-lg text-nadya-cream/70 hover:text-nadya-cream" />
           <ThemeToggle className="flex h-9 w-9 items-center justify-center text-nadya-cream/70 hover:text-nadya-cream" />
           <span className="text-xs text-nadya-cream/60">
             {displayName} · {role === "owner" ? "Propriétaire" : "Staff"}
@@ -95,6 +97,7 @@ export function AdminNav({
               {displayName} · {role === "owner" ? "Propriétaire" : "Staff"}
             </span>
             <div className="flex items-center gap-3">
+              <PushNotificationToggle className="flex h-8 w-8 items-center justify-center text-lg text-nadya-cream/70" />
               <ThemeToggle className="flex h-8 w-8 items-center justify-center text-nadya-cream/70" />
               <LogoutButton />
             </div>

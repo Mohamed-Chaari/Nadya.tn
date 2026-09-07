@@ -2,10 +2,19 @@
 
 import { getSupabaseServiceClient } from "@/lib/supabase/server";
 import { orderNotifier } from "@/lib/notifications/notify-order";
+import { notifyAdminsOfNewOrder } from "@/lib/notifications/push-send";
 import type { CartLine } from "@/lib/cart/cart-context";
 import { tunisiaGovernorates } from "@/lib/data/tunisia-locations";
 import { SHIPPING_FEE } from "@/lib/config/shipping";
 import { validateCoupon } from "@/lib/coupons/validate";
+import { getPreviousCustomerInfo, type PreviousCustomerInfo } from "@/lib/customers/get-previous-order";
+import { LOYALTY_DISCOUNT_RATE } from "@/lib/config/loyalty";
+
+export async function lookupReturningCustomer(
+  phone: string
+): Promise<PreviousCustomerInfo | null> {
+  return getPreviousCustomerInfo(phone);
+}
 
 export interface CheckoutInput {
   customerName: string;
@@ -68,11 +77,24 @@ export async function createOrder(input: CheckoutInput): Promise<CheckoutResult>
   // the whole order, since the client already surfaced errors before submit.
   let couponCode: string | null = null;
   let discountAmount = 0;
+  let isRealCoupon = false;
   if (input.couponCode?.trim()) {
     const couponResult = await validateCoupon(input.couponCode, subtotal);
     if (couponResult.valid) {
       couponCode = couponResult.code ?? null;
       discountAmount = couponResult.discountAmount ?? 0;
+      isRealCoupon = true;
+    }
+  }
+
+  // Loyalty: auto-apply a small discount for a returning phone number, but
+  // only when the customer didn't already enter an explicit coupon — a
+  // manually entered code always wins rather than stacking.
+  if (!couponCode) {
+    const previous = await getPreviousCustomerInfo(phone);
+    if (previous) {
+      couponCode = "FIDELITE";
+      discountAmount = Math.round(subtotal * LOYALTY_DISCOUNT_RATE * 1000) / 1000;
     }
   }
 
@@ -124,7 +146,7 @@ export async function createOrder(input: CheckoutInput): Promise<CheckoutResult>
     return { success: false, errorCode: "generic" };
   }
 
-  if (couponCode) {
+  if (isRealCoupon && couponCode) {
     const { error: rpcError } = await supabase.rpc("increment_coupon_used_count", {
       coupon_code: couponCode,
     });
@@ -139,6 +161,14 @@ export async function createOrder(input: CheckoutInput): Promise<CheckoutResult>
     total,
     itemSummary,
   });
+
+  // Push notification to admins — best-effort, never blocks the order.
+  await notifyAdminsOfNewOrder({
+    orderNumber: order.order_number,
+    customerName: name,
+    total,
+    itemSummary,
+  }).catch((err) => console.error("[createOrder] push notification failed", err));
 
   return { success: true, orderNumber: order.order_number };
 }
