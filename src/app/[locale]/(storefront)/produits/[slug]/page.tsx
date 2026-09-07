@@ -7,7 +7,7 @@ import { getCategory } from "@/lib/data/categories";
 import { getCategoryName } from "@/lib/category-i18n";
 import { formatPrice } from "@/lib/format";
 import { getLocalizedDescription, getLocalizedMaterials } from "@/lib/product-i18n";
-import { getApprovedReviews, computeReviewStats } from "@/lib/reviews/get-reviews";
+import { getApprovedReviews } from "@/lib/reviews/get-reviews";
 import { ProductGallery } from "@/components/product/product-gallery";
 import { ProductRating } from "@/components/product/product-rating";
 import { AddToCartForm } from "@/components/product/add-to-cart-form";
@@ -47,7 +47,6 @@ export default async function ProductPage({ params }: PageProps) {
   const category = await getCategory(product.categorySlug);
   const related = await getRelatedProducts(product);
   const reviews = await getApprovedReviews(product.id);
-  const reviewStats = computeReviewStats(reviews);
   const tReviews = await getTranslations("Reviews");
 
   return (
@@ -82,9 +81,9 @@ export default async function ProductPage({ params }: PageProps) {
           <h1 className="mt-2 font-display text-3xl text-nadya-black dark:text-nadya-cream">{product.nameFr}</h1>
           <p className="mt-1 text-nadya-black/60 dark:text-nadya-cream/60">{product.subtitleFr}</p>
 
-          {reviewStats.count > 0 && (
+          {product.reviewCount > 0 && (
             <div className="mt-3">
-              <ProductRating rating={reviewStats.average} reviewCount={reviewStats.count} />
+              <ProductRating rating={product.rating} reviewCount={product.reviewCount} />
             </div>
           )}
 

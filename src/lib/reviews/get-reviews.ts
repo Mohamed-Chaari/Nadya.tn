@@ -9,11 +9,6 @@ export interface Review {
   createdAt: string;
 }
 
-export interface ReviewStats {
-  average: number;
-  count: number;
-}
-
 export async function getApprovedReviews(productId: string): Promise<Review[]> {
   const supabase = getSupabaseServiceClient();
   const { data, error } = await supabase
@@ -35,10 +30,4 @@ export async function getApprovedReviews(productId: string): Promise<Review[]> {
     comment: r.comment,
     createdAt: r.created_at,
   }));
-}
-
-export function computeReviewStats(reviews: Review[]): ReviewStats {
-  if (reviews.length === 0) return { average: 0, count: 0 };
-  const sum = reviews.reduce((total, r) => total + r.rating, 0);
-  return { average: sum / reviews.length, count: reviews.length };
 }

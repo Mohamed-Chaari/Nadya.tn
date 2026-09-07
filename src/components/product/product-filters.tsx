@@ -9,9 +9,11 @@ import type { Category } from "@/lib/types";
 
 const priceRanges = [
   { key: "all", min: undefined, max: undefined },
-  { key: "under", min: undefined, max: 200 },
-  { key: "range", min: 200, max: 350 },
-  { key: "over", min: 350, max: undefined },
+  { key: "under", min: undefined, max: 30 },
+  { key: "range-30-50", min: 30, max: 50 },
+  { key: "range-50-70", min: 50, max: 70 },
+  { key: "range-70-100", min: 70, max: 100 },
+  { key: "over", min: 100, max: undefined },
 ] as const;
 
 export function ProductFilters({
